@@ -1,2 +1,2 @@
-# UCNP-project
+# UCNP
 Judd-Ofelt theory based, DFT-assisted computational model of UCNP
