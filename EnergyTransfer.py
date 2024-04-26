@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 def get_constants():
    
    s0=0.00014
