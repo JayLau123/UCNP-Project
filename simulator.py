@@ -42,6 +42,12 @@ class Simulator():
             nir40s = []
             green50s = []
             green60s = []
+            yb_upconversions = []
+            yb_ybs = []
+            yb_excites = []
+            er_decays = []
+            er_upconversions = []
+            er_crossrelaxations = []
 
         for _ in range(steps):
 
@@ -49,6 +55,12 @@ class Simulator():
                 nir40 = 0
                 green50 = 0
                 green60 = 0
+                yb_upconversion = 0
+                yb_yb = 0
+                yb_excite = 0
+                er_decay = {} # including MPR and MD
+                er_upconversion = {}
+                er_crossrelaxation = {}
 
             np.random.shuffle(self.lattice.excited)
 
@@ -78,6 +90,7 @@ class Simulator():
                     decay_rates_sum = sum(p_decay_rates)
                     p_decay_rates = [i/decay_rates_sum for i in p_decay_rates]
                     new_state = np.random.choice(decayed, p=p_decay_rates)
+                    er_decay[(p.state, new_state)] = er_decay.setdefault((p.state, new_state), 0) + 1
                     if emission: 
                         if p.state == 4 and new_state == 0:
                             nir40 += 1
@@ -95,12 +108,16 @@ class Simulator():
                     if p.type == 'Yb' and nei.type == 'Yb':
                         p.state = 0
                         nei.state = 1
+                        yb_yb += 1
                     elif p.type == 'Yb' and nei.type != 'Yb':
                         new_state = self.up_conversion[nei.state].select_path(distance)
+                        yb_upconversion += 1
+                        er_upconversion[(nei.state, new_state[1])] = er_upconversion.setdefault((nei.state, new_state[1]), 0) + 1
                         p.state = new_state[0]
                         nei.state = new_state[1]
                     else:
                         new_state = self.cross_relaxation[p.state][nei.state].select_path(distance)
+                        er_crossrelaxation[(p.state, new_state[0], nei.state, new_state[1])] = er_crossrelaxation.setdefault((p.state, new_state[0], nei.state, new_state[1]), 0) + 1
                         p.state = new_state[0]
                         nei.state = new_state[1]
                 
@@ -108,6 +125,7 @@ class Simulator():
             for p in self.lattice.ground_yb: 
                 if np.random.rand() < self.dt*self.tag['laser']:
                     p.state = 1
+                    yb_excite += 1
             
             # update new excited state Yb and Tm, and update new ground state Yb
             self.lattice.excited = [p for p in self.lattice.points if p.state != 0]
@@ -118,6 +136,12 @@ class Simulator():
                 nir40s.append(nir40)
                 green50s.append(green50)
                 green60s.append(green60)
+                yb_upconversions.append(yb_upconversion)
+                yb_ybs.append(yb_yb)
+                yb_excites.append(yb_excite)
+                er_decays.append(er_decay)
+                er_upconversions.append(er_upconversion)
+                er_crossrelaxations.append(er_crossrelaxation)
         
         if emission:
             # print(nir40s, green50s, green60s)
@@ -129,10 +153,22 @@ class Simulator():
             if steps == 1: 
                 step_data['nir'] = nir40s[0]
                 step_data['green'] = green50s[0], green60s[0]
+                step_data['yb_upconversions'] = yb_upconversions[0]
+                step_data['yb_ybs'] = yb_ybs[0]
+                step_data['yb_excites'] = yb_excites[0]
+                step_data['er_decays'] = er_decays[0]
+                step_data['er_upconversions'] = er_upconversions[0]
+                step_data['er_crossrelaxations'] = er_crossrelaxations[0]
                 return step_data
             else: 
                 step_data['nir'] = nir40s
                 step_data['green'] = green50s, green60s
+                step_data['yb_upconversions'] = yb_upconversions
+                step_data['yb_yb'] = yb_ybs
+                step_data['yb_excites'] = yb_excites
+                step_data['er_decays'] = er_decays
+                step_data['er_upconversions'] = er_upconversions
+                step_data['er_crossrelaxations'] = er_crossrelaxations
                 return step_data
     
     def show_state(self):
@@ -162,6 +198,14 @@ class Simulator():
         nir40s = []
         green50s = []
         green60s = []
+
+        yb_upconversions = []
+        yb_ybs = []
+        yb_excites = []
+        er_decays = [] # including MPR and MD
+        er_upconversions = []
+        er_crossrelaxations = []
+        
         for _ in tqdm(range(t2-t1)):
             r = self.step(emission = True)
             nirs.append(r['nir'])
@@ -179,6 +223,15 @@ class Simulator():
                 yb_stat, tm_stat = self.lattice.collect_stats()
                 yb_stats.append(yb_stat)
                 tm_stats.append(tm_stat)
+            
+            
+            yb_upconversions.append(r['yb_upconversions'])
+            yb_ybs.append(r['yb_ybs'])
+            yb_excites.append(r['yb_excites'])
+            er_decays.append(r['er_decays'])
+            er_upconversions.append(r['er_upconversions'])
+            er_crossrelaxations.append(r['er_crossrelaxations'])
+            
         # self.plot_stats(yb_stats, tm_stats)
         sim_stats = {}
         sim_stats['nir_microsecond'] = nirs
@@ -190,6 +243,13 @@ class Simulator():
         sim_stats['green_avg'] = np.mean(greens)
         sim_stats['yb_distribution'] = yb_state_evolution
         sim_stats['tm_distribution'] = tm_state_evolution
+
+        sim_stats['yb_upconversions'] = yb_upconversions
+        sim_stats['yb_ybs'] = yb_ybs
+        sim_stats['yb_excites'] = yb_excites
+        sim_stats['er_decays'] = er_decays
+        sim_stats['er_upconversions'] = er_upconversions
+        sim_stats['er_crossrelaxations'] = er_crossrelaxations
         return sim_stats
     
     def plot_stats(self, yb_stats, tm_stats):
@@ -268,10 +328,8 @@ class Simulator():
 # simulator = Simulator(lattice)
 # t1 = 5
 # t2 = 10
-# nir, blue = simulator.simulate(t1, t2)
-# nir = nir*10**6
-# blue = blue*10**6
-# print(nir, blue)
+# r = simulator.simulate(t1, t2)
+# print(r.keys())
         
 
 
