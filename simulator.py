@@ -149,7 +149,9 @@ class Simulator():
             step_data['yb_state'] = yb_state
             tm_state = [len([p for p in self.lattice.points if p.state == i and p.type == 'Er']) for i in range(8)]
             step_data['tm_state'] = tm_state
+
             if steps == 1: 
+
                 step_data['nir'] = nir40s[0]
                 step_data['green'] = green50s[0], green60s[0]
                 step_data['yb_upconversions'] = yb_upconversions[0]
@@ -159,28 +161,32 @@ class Simulator():
                 step_data['er_upconversions'] = er_upconversions[0]
                 step_data['er_crossrelaxations'] = er_crossrelaxations[0]
                 return step_data
-            else: 
-                step_data['nir'] = nir40s
-                step_data['green'] = green50s, green60s
-                step_data['yb_upconversions'] = yb_upconversions
-                step_data['yb_yb'] = yb_ybs
-                step_data['yb_excites'] = yb_excites
-                step_data['er_decays'] = er_decays
-                step_data['er_upconversions'] = er_upconversions
-                step_data['er_crossrelaxations'] = er_crossrelaxations
-                return step_data
+            
+            # else: 
+
+            #     step_data['nir'] = nir40s
+            #     step_data['green'] = green50s, green60s
+            #     step_data['yb_upconversions'] = yb_upconversions
+            #     step_data['yb_yb'] = yb_ybs
+            #     step_data['yb_excites'] = yb_excites
+            #     step_data['er_decays'] = er_decays
+            #     step_data['er_upconversions'] = er_upconversions
+            #     step_data['er_crossrelaxations'] = er_crossrelaxations
+            #     return step_data
     
-    def show_state(self):
-        self.lattice.plot_3d_points_with_plotly()
+    # def show_state(self):
+    #     self.lattice.plot_3d_points_with_plotly()
     
-    def plot_distributions(self):
-        self.lattice.plot_distributions()
+    # def plot_distributions(self):
+    #     self.lattice.plot_distributions()
 
     def simulate(self, t1, t2=None):
+
         ## At 2500 steps, reach steady state
-        ## 折射率是1.5
+   
         yb_state_evolution = {i:[] for i in range(0, 2)}
         tm_state_evolution = {i:[] for i in range(0, 8)}
+        
         for _ in tqdm(range(t1)):
             r = self.step(emission=True)
             for i in range(2):
