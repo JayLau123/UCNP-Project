@@ -38,7 +38,7 @@ class Simulator():
     def step(self, steps = 1, emission = False):
 
         if emission:
-            nir40s = []
+            red40s = []
             green50s = []
             green60s = []
             yb_upconversions = []
@@ -51,7 +51,7 @@ class Simulator():
         for _ in range(steps):
 
             if emission:
-                nir40 = 0
+                red40 = 0
                 green50 = 0
                 green60 = 0
                 yb_upconversion = 0
@@ -92,7 +92,7 @@ class Simulator():
                     er_decay[(p.state, new_state)] = er_decay.setdefault((p.state, new_state), 0) + 1
                     if emission: 
                         if p.state == 4 and new_state == 0:
-                            nir40 += 1
+                            red40 += 1
                         if p.state == 5 and new_state == 0:
                             green50 += 1
                         if p.state == 6 and new_state == 0:
@@ -132,7 +132,7 @@ class Simulator():
             self.t += 1
 
             if emission:
-                nir40s.append(nir40)
+                red40s.append(red40)
                 green50s.append(green50)
                 green60s.append(green60)
                 yb_upconversions.append(yb_upconversion)
@@ -143,7 +143,7 @@ class Simulator():
                 er_crossrelaxations.append(er_crossrelaxation)
         
         if emission:
-            # print(nir40s, green50s, green60s)
+ 
             step_data = {}
             yb_state = [len([p for p in self.lattice.points if p.state == i and p.type == 'Yb']) for i in range(2)]
             step_data['yb_state'] = yb_state
@@ -152,7 +152,7 @@ class Simulator():
 
             if steps == 1: 
 
-                step_data['nir'] = nir40s[0]
+                step_data['red'] = red40s[0]
                 step_data['green'] = green50s[0], green60s[0]
                 step_data['yb_upconversions'] = yb_upconversions[0]
                 step_data['yb_ybs'] = yb_ybs[0]
@@ -164,7 +164,7 @@ class Simulator():
             
             # else: 
 
-            #     step_data['nir'] = nir40s
+            #     step_data['red'] = red40s
             #     step_data['green'] = green50s, green60s
             #     step_data['yb_upconversions'] = yb_upconversions
             #     step_data['yb_yb'] = yb_ybs
@@ -196,11 +196,13 @@ class Simulator():
         if t2 is None:
             return
         c = 0
-        yb_stats = []
-        tm_stats = []
-        nirs = []
+
+        # yb_stats = []
+        # tm_stats = []
+
+        reds = []
         greens = []
-        nir40s = []
+        red40s = []
         green50s = []
         green60s = []
 
@@ -212,23 +214,28 @@ class Simulator():
         er_crossrelaxations = []
         
         for _ in tqdm(range(t2-t1)):
+
             r = self.step(emission = True)
-            nirs.append(r['nir'])
-            # print(r['nir'], r['green'], greens)
+
+            reds.append(r['red'])
+
             greens.append(sum(r['green']))
-            nir40s.append(r['nir']) # [0]
+            red40s.append(r['red']) # [0]
             green50s.append(r['green'][0])
             green60s.append(r['green'][1])
             for i in range(2):
                 yb_state_evolution[i].append(r['yb_state'][i])
             for i in range(8):
                 tm_state_evolution[i].append(r['tm_state'][i])
-            c+=1
-            if c%100 == 0:
-                yb_stat, tm_stat = self.lattice.collect_stats()
-                yb_stats.append(yb_stat)
-                tm_stats.append(tm_stat)
+
+
+            # c+=1
+            # if c%100 == 0:
+            #     yb_stat, tm_stat = self.lattice.collect_stats()
+            #     yb_stats.append(yb_stat)
+            #     tm_stats.append(tm_stat)
             
+
             
             yb_upconversions.append(r['yb_upconversions'])
             yb_ybs.append(r['yb_ybs'])
@@ -239,12 +246,12 @@ class Simulator():
             
         # self.plot_stats(yb_stats, tm_stats)
         sim_stats = {}
-        sim_stats['nir_microsecond'] = nirs
+        sim_stats['red_microsecond'] = reds
         sim_stats['blue_microsecond'] = greens
-        sim_stats['nir40s'] = nir40s
+        sim_stats['red40s'] = red40s
         sim_stats['green50s'] = green50s
         sim_stats['green60s'] = green60s
-        sim_stats['nir_avg'] = np.mean(nirs)
+        sim_stats['red_avg'] = np.mean(reds)
         sim_stats['green_avg'] = np.mean(greens)
         sim_stats['yb_distribution'] = yb_state_evolution
         sim_stats['tm_distribution'] = tm_state_evolution
@@ -257,6 +264,9 @@ class Simulator():
         sim_stats['er_crossrelaxations'] = er_crossrelaxations
         return sim_stats
     
+
+
+'''
     def plot_stats(self, yb_stats, tm_stats):
 
         plt.figure(figsize=(15, 5))
@@ -302,9 +312,7 @@ class Simulator():
 
         plt.tight_layout()
         plt.show()
-
-
-
+'''
 
         
 
