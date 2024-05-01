@@ -7,7 +7,6 @@ from point import *
 
 from tqdm import tqdm
 
-# 
 tag_default={'c0':9.836062e-40, # Yb-Yb resonant energy transfer
         'Ws':0,
         'W10':88.12753083306136,
@@ -299,58 +298,7 @@ class Simulator():
         plt.show()
 
 
-# lattice = Lattice(0.5, 0.5, 2, 0.5)
-# lattice.plot_3d_points_with_plotly()
-# lattice.plot_3d_points_with_na()
-
-# simulator = Simulator(lattice)
-# simulator.show_state()
-# simulator.simulate(3000,4000)
-# simulator.show_state()
 
 
-# lattice = Lattice(0.85, 0.15, 8, 1)
-
-# tag_default={'c0':7.025758333333333e-39, # Yb-Yb resonant energy transfer
-#              'c1':8.823270689202585e-42,'c2':2.824326729780273e-41,'c3':2.510909737310349e-42,'c4':2.5507997193509964e-43,
-#              'k31':2.0458454593341336e-41,'k41':7.299896312979955e-41,'k51':1.2897342736133983e-40,
-#         'Ws':1000,
-#         'W10':125.48935641249709,
-#         'W21':3.318715560788497 + 149977.8404029679,'W20':176.99746253145912 + 50.01921044404302,
-#         'W32':34.206376660350635 + 7.407650126658919,'W31':66.54090079350377,'W30':778.6223334161804,
-#         'W43':1000.49241968088766640 + 1768677.8208097615,'W42':146.53082969740504,'W41':258.72754779151234 + 58.98152867828142,'W40':1725.685918453449,
-#         'W54':0.013601242611778256 + 0.017876416530239997 + 156605871.04362732,'W53':5.142484506889417 + 230669.86963087242,'W52':192.81631278900016,'W51':362.10251583753916,'W50':548.8209590762159,
-#         'W65':12.27244074045102,'W64':10045.2434631327987160,'W63':23.045067137896037,'W62':494.8335554945873,'W61':790.6119449426245,'W60':612.1894036274351,
-#         'W76':95.08404006966971,'W75':686.9558866118873,'W74':488.5169554820362,'W73':2125.9773631820567,'W72':94.77917251652532,'W71':2862.4113298030165,'W70':7073.7489463917145,
-#         'MPR21':0,'MPR43':0,
-#         'laser': 5.76*10**(2)}
-
-# simulator = Simulator(lattice)
-# t1 = 5
-# t2 = 10
-# r = simulator.simulate(t1, t2)
-# print(r.keys())
         
 
-
-# conc = 0.08
-# p = 500
-# # p = 10**4
-
-# all_results = {}
-
-# nirs = []
-# greens = []
-# lattice = Lattice(1-conc, conc, 8, 1)
-# tag_default['laser'] = 5.76*(p/100)
-# simulator = Simulator(lattice, tag = tag_default)
-# t1 = 2000
-# t2 = 3000
-# r = simulator.simulate(t1, t2)
-# nir, green = r['nir_avg'], r['green_avg']
-# nir = nir*10**6
-# blue = green*10**6
-# nirs.append(nir)
-# greens.append(blue)
-# all_results[conc] = nirs, greens
-# print(all_results)

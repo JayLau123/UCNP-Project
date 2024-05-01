@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 def get_constants():
    
    s0=0.00014
@@ -56,8 +54,6 @@ def get_constants():
    Er_Omega={'2':2.11*10**-20, '4':1.37*10**-20, '6':1.22*10**-20}
 
    return s0, beta, constant, E_phonon, threshold, Tm_RME, Er_RME, Tm_energy, Er_energy, Yb_energy, Tm_g, Er_g, Yb_g, Tm_Omega, Er_Omega, n
-
-
 
 
 class EnergyTransfer():

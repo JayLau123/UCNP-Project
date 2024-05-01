@@ -9,9 +9,7 @@ import plotly.graph_objects as go
 from tqdm import tqdm
 from scipy.integrate import odeint
 
-
-class Lattice():
-    # shape of lattice based on https://www.nature.com/articles/s41598-018-19415-w and
+# shape of lattice based on https://www.nature.com/articles/s41598-018-19415-w and
     # https://www.researchgate.net/publication/253240215_Enhancement_of_blue_upconversion_luminescence_in_hexagonal_NaYF_4_YbTm_by_using_K_and_Sc_ions?enrichId=rgreq-ded66b2e7d92246868aa37d5e2ce7db2-XXX&enrichSource=Y292ZXJQYWdlOzI1MzI0MDIxNTtBUzoxMDIwMTIzNzI5MTQxNzlAMTQwMTMzMzA1MzY0Nw%3D%3D&el=1_x_3&_esc=publicationCoverPdf
     # Power-Dependent Optimal Concentrations of Tm3+ and Yb3+ in Upconversion Nanoparticles
 
@@ -22,6 +20,8 @@ class Lattice():
     # Some ignored details: probabilistic occupation of nodes, P\bar{6}2m, P\bar{6}, P6_3m
     #    https://www.researchgate.net/profile/Sameera-Perera-2/publication/318604006_Average_and_Local_Crystal_Structure_of_b-ErYbNaYF_4_Upconverting_Nanocrystals_Probed_by_X-ray_Total_Scattering/links/62f94e40b8dc8b4403e1987c/Average-and-Local-Crystal-Structure-of-b-ErYbNaYF-4-Upconverting-Nanocrystals-Probed-by-X-ray-Total-Scattering.pdf
 
+class Lattice():
+    
     def __init__(self, yb_conc, tm_conc, d, r, seed = None):
         if seed is not None:
             np.random.seed(seed)
@@ -329,14 +329,4 @@ class Lattice():
         return state_f
     
 
-
-
-
-
-# lattice = Lattice(0.6, 0.3, 4, 0.5)
-
-# print(lattice.ode_distribution())
-# lattice.plot_distributions()
-# lattice.plot_3d_points_with_plotly()
-# lattice.plot_3d_points_with_na()
 
