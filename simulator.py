@@ -247,10 +247,11 @@ class Simulator():
         # self.plot_stats(yb_stats, tm_stats)
         sim_stats = {}
         sim_stats['red_microsecond'] = reds
-        sim_stats['blue_microsecond'] = greens
+        sim_stats['green_microsecond'] = greens
         sim_stats['red40s'] = red40s
         sim_stats['green50s'] = green50s
         sim_stats['green60s'] = green60s
+        
         sim_stats['red_avg'] = np.mean(reds)
         sim_stats['green_avg'] = np.mean(greens)
         sim_stats['yb_distribution'] = yb_state_evolution
