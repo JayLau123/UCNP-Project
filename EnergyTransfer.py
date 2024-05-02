@@ -138,8 +138,8 @@ def up_conversion():
          if (my_value > threshold):
             
             donor_transition, acceptor_transition = key.split('-')
-            donor_parts = donor_transition.split('E')
-            donor_final_state = int(donor_parts[1])
+            donor_parts = donor_transition.split('S')
+            donor_final_state = int(donor_parts[2])
             acceptor_parts = acceptor_transition.split('E')
             acceptor_final_state = int(acceptor_parts[2])
 
@@ -239,7 +239,7 @@ def cross_relaxation():
                
                donor_transition, acceptor_transition = key.split('-')
                donor_parts = donor_transition.split('E')
-               donor_final_state = int(donor_parts[1])
+               donor_final_state = int(donor_parts[2])
                acceptor_parts = acceptor_transition.split('E')
                acceptor_final_state = int(acceptor_parts[2])
 
