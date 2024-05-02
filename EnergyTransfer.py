@@ -165,7 +165,7 @@ class CrossRelaxation(EnergyTransfer):
       self.resulting_states = []
 
    def total_probability(self, r):
-      return sum([result1[2]/r**6 for result1 in self.resulting_states])
+      return sum([result1[2]/(r/10**7)**6 for result1 in self.resulting_states])
 
    def select_path(self, r):
       if len(self.resulting_states) == 0 :
