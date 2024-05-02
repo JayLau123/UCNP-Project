@@ -220,7 +220,7 @@ class Simulator():
             reds.append(r['red'])
 
             greens.append(sum(r['green']))
-            red40s.append(r['red']) # [0]
+            red40s.append(r['red'])
             green50s.append(r['green'][0])
             green60s.append(r['green'][1])
             for i in range(2):
@@ -248,16 +248,22 @@ class Simulator():
         sim_stats = {}
         sim_stats['red_microsecond'] = reds
         sim_stats['green_microsecond'] = greens
+
         sim_stats['red40s'] = red40s
         sim_stats['green50s'] = green50s
         sim_stats['green60s'] = green60s
         
         sim_stats['red_avg'] = np.mean(reds)
         sim_stats['green_avg'] = np.mean(greens)
+        sim_stats['green50_avg'] = np.mean(green50s)
+        sim_stats['green60_avg'] = np.mean(green60s)
+
+
         sim_stats['yb_distribution'] = yb_state_evolution
         sim_stats['tm_distribution'] = tm_state_evolution
 
-        sim_stats['nir_avg_pop'] = np.mean(tm_state_evolution[4][t1:]) * self.tag['W40']
+        # calculate red and green by population * rate
+        sim_stats['red_avg_pop'] = np.mean(tm_state_evolution[4][t1:]) * self.tag['W40']
         sim_stats['green_avg_pop'] = np.mean(tm_state_evolution[6][t1:]) * self.tag['W60'] + np.mean(tm_state_evolution[5][t1:]) * self.tag['W50'] 
 
         sim_stats['yb_upconversions'] = yb_upconversions
