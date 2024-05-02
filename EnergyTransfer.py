@@ -1,14 +1,12 @@
 import numpy as np
 
-
-
 def get_constants():
    
    s0=0.00014
    beta = 2*10**-3
    constant = 843091
    E_phonon=450
-   threshold = 10**-43
+   threshold = 10**-42
    n=10
 
    Tm_RME={'E1E0':[0.527, 0.718, 0.228],
@@ -59,7 +57,6 @@ def get_constants():
 
 
 
-
 class EnergyTransfer():
    def total_probability(self, r):
       pass
@@ -69,6 +66,7 @@ class EnergyTransfer():
 
    def add_state(self, ion12, ion22, rate):
       pass
+
 
 
 
@@ -83,39 +81,16 @@ class UpConversion(EnergyTransfer):
    def select_path(self, r):
       if len(self.resulting_states) == 0 :
          return None
+      
       results = [result1[2]/r**6 for result1 in self.resulting_states]
-      total_prob = sum(results)
-      results = [prob / total_prob for prob in results]
-      # print(self.resulting_states, total_prob, results)
+      results = [prob / sum(results) for prob in results]
+
       new_state = np.random.choice([i for i in range(len(self.resulting_states))], p=results)
       return self.resulting_states[new_state][0:2]
    
    def add_state(self, ion12, ion22, rate):
       self.resulting_states.append((ion12, ion22, rate))
 
-
-
-class CrossRelaxation(EnergyTransfer):
-   def __init__ (self, ion1, ion2):
-      self.ion1 = ion1
-      self.ion2 = ion2
-      self.resulting_states = []
-
-   def total_probability(self, r):
-      return sum([result1[2]/r**6 for result1 in self.resulting_states])
-
-   def select_path(self, r):
-      if len(self.resulting_states) == 0 :
-         return None
-      results = [result1[2]/(r/10**7)**6 for result1 in self.resulting_states]
-      total_prob = sum(results)
-      results = [prob / total_prob for prob in results]
-      # print(self.resulting_states, total_prob, results)
-      new_state = np.random.choice([i for i in range(len(self.resulting_states))], p=results)
-      return self.resulting_states[new_state][0:2]
-   
-   def add_state(self, ion12, ion22, rate):
-      self.resulting_states.append((ion12, ion22, rate))
 
 
 def up_conversion():
@@ -137,6 +112,8 @@ def up_conversion():
       delta_E_ion2 = {f'{ion2_energy}{level}':  E_level[ion2_energy] -  E_level[level] for level in E_level if level != ion2_energy}
    
       for transition2, energy_diff2 in delta_E_ion2.items():
+
+         ################################################################# important: ET matching condition
          if (energy_diff2 < 0 and abs(10246 + energy_diff2)< n*E_phonon):
             Delta_E = abs(10246 + energy_diff2)
             key = f'S1S0-{transition2}'
@@ -158,13 +135,47 @@ def up_conversion():
 
          my_value = constant*s0*(S1*S2)*np.exp(-beta*value[0])/(value[3][0]*value[3][1])
 
-         if (my_value > threshold):            
-            ion2_et.add_state(0, int(key[-1]), my_value)
+         if (my_value > threshold):
+            
+            donor_transition, acceptor_transition = key.split('-')
+            donor_parts = donor_transition.split('S')
+            donor_final_state = int(donor_parts[2])
+            acceptor_parts = acceptor_transition.split('E')
+            acceptor_final_state = int(acceptor_parts[2])
+
+            ion2_et.add_state(donor_final_state, acceptor_final_state, my_value)
+            # ion2_et.add_state(0, int(key[-1]), my_value)
+
+      
 
       ret[int(ion2_energy[1:])] = ion2_et
 
       
    return ret
+
+
+
+class CrossRelaxation(EnergyTransfer):
+   def __init__ (self, ion1, ion2):
+      self.ion1 = ion1
+      self.ion2 = ion2
+      self.resulting_states = []
+
+   def total_probability(self, r):
+      return sum([result1[2]/r**6 for result1 in self.resulting_states])
+
+   def select_path(self, r):
+      if len(self.resulting_states) == 0 :
+         return None
+      
+      results = [result1[2]/(r/10**7)**6 for result1 in self.resulting_states]
+      results = [prob / sum(results) for prob in results]
+      # print(self.resulting_states, total_prob, results)
+      new_state = np.random.choice([i for i in range(len(self.resulting_states))], p=results)
+      return self.resulting_states[new_state][0:2]
+   
+   def add_state(self, ion12, ion22, rate):
+      self.resulting_states.append((ion12, ion22, rate))
 
 
 
@@ -190,6 +201,8 @@ def cross_relaxation():
 
          for transition1, energy_diff1 in delta_E_ion1.items():
             for transition2, energy_diff2 in delta_E_ion2.items():
+
+               ################################################################# important: ET matching condition
                if (energy_diff1 > 0 and energy_diff2 < 0 and abs(energy_diff1+energy_diff2)< n*E_phonon) or (energy_diff1 < 0 and energy_diff2 > 0 and abs(energy_diff2+energy_diff1)< n*E_phonon):
                   
                   Delta_E = abs(energy_diff1 + energy_diff2)
@@ -198,6 +211,8 @@ def cross_relaxation():
 
          for ET_key in all_transitions:
             first_part, second_part = ET_key.split('-')
+            
+            # Oscillator strength: S (Emory)
             first_values = RME_value.get(first_part, [])
             second_values = RME_value.get(second_part, [])
 
@@ -210,6 +225,8 @@ def cross_relaxation():
 
             parts = second_part.split('E')
             new_key2 = f'E{parts[1]}'
+
+            # append degeneracy of initial level of donor and acceptor
             all_transitions[ET_key].append([g_value[new_key1], g_value[new_key2]])
 
          for key, value in all_transitions.items():
@@ -219,11 +236,26 @@ def cross_relaxation():
             my_value = constant*s0*(S1*S2)*np.exp(-beta*value[0])/(value[3][0]*value[3][1])
 
             if (my_value > threshold):
-               # print()
-               ion1_ion2_et.add_state(int(key[3]), int(key[-1]), my_value)
+               
+               donor_transition, acceptor_transition = key.split('-')
+               donor_parts = donor_transition.split('E')
+               donor_final_state = int(donor_parts[2])
+               acceptor_parts = acceptor_transition.split('E')
+               acceptor_final_state = int(acceptor_parts[2])
 
-         ion1_ets[int(ion2_energy[1])] = ion1_ion2_et
-      ret[int(ion1_energy[1])] = ion1_ets
+               ion1_ion2_et.add_state(donor_final_state, acceptor_final_state, my_value)
+               # ion1_ion2_et.add_state(int(key[3]), int(key[-1]), my_value)
+
+         parts_ion2 = ion2_energy.split('E')
+         ion2_initial_state = int(parts_ion2[1])
+         ion1_ets[ion2_initial_state] = ion1_ion2_et
+         # ion1_ets[int(ion2_energy[1])] = ion1_ion2_et
+
+
+      parts_ion1 = ion1_energy.split('E')
+      ion1_initial_state = int(parts_ion1[1])
+      ret[ion1_initial_state] = ion1_ets
+      #ret[int(ion1_energy[1])] = ion1_ets
 
       
    return ret
