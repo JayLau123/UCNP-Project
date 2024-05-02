@@ -105,7 +105,10 @@ def up_conversion():
    
    ret = {}
    for ion2_energy in Er_energy:
-      ion2_et = UpConversion(int(ion2_energy[1:]))
+
+      ion2_parts = ion2_energy.split('E')
+      ion2_initial_state = int(ion2_parts[1])
+      ion2_et = UpConversion(ion2_initial_state)
 
       all_transitions = {}
       delta_E_ion1 = {'S1S0': 10246}
@@ -192,8 +195,17 @@ def cross_relaxation():
 
    for ion1_energy in Er_energy:
       ion1_ets = {}
+
+      donor_parts = ion1_energy.split('E')
+      donor_initial_state=int(donor_parts[1])
+
+
       for ion2_energy in Er_energy:
-         ion1_ion2_et = CrossRelaxation(int(ion1_energy[1]), int(ion2_energy[1]))
+
+         acceptor_parts = ion2_energy.split('E')
+         acceptor_initial_state=int(acceptor_parts[1])
+
+         ion1_ion2_et = CrossRelaxation(donor_initial_state, acceptor_initial_state)
 
          all_transitions = {}
          delta_E_ion1 = {f'{ion1_energy}{level}':  energy_levels[ion1_energy] -  energy_levels[level] for level in energy_levels if level != ion1_energy}
