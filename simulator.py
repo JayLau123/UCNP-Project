@@ -265,6 +265,8 @@ class Simulator():
         # calculate red and green by population * rate
         sim_stats['red_avg_pop'] = np.mean(tm_state_evolution[4][t1:]) * self.tag['W40']
         sim_stats['green_avg_pop'] = np.mean(tm_state_evolution[6][t1:]) * self.tag['W60'] + np.mean(tm_state_evolution[5][t1:]) * self.tag['W50'] 
+        sim_stats['green50_avg_pop'] = np.mean(tm_state_evolution[5][t1:]) * self.tag['W50']
+        sim_stats['green60_avg_pop'] = np.mean(tm_state_evolution[6][t1:]) * self.tag['W60']
 
         sim_stats['yb_upconversions'] = yb_upconversions
         sim_stats['yb_ybs'] = yb_ybs
