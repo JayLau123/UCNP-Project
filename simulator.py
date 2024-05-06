@@ -255,7 +255,7 @@ class Simulator():
         
         sim_stats['red_avg'] = np.mean(reds)
         sim_stats['green_avg'] = np.mean(greens)
-        sim_stats['r_g_ratio'] = np.mean(reds)/np.mean(greens)
+        sim_stats['red_green_ratio'] = np.mean(reds)/np.mean(greens)
         sim_stats['red_green_total_avg'] = np.mean(reds)+np.mean(greens)
         sim_stats['green50_avg'] = np.mean(green50s)
         sim_stats['green60_avg'] = np.mean(green60s)
@@ -267,7 +267,7 @@ class Simulator():
         # calculate red and green by population * rate
         sim_stats['red_avg_pop'] = np.mean(tm_state_evolution[4][t1:]) * self.tag['W40']
         sim_stats['green_avg_pop'] = np.mean(tm_state_evolution[6][t1:]) * self.tag['W60'] + np.mean(tm_state_evolution[5][t1:]) * self.tag['W50'] 
-        sim_stats['r_g_ratio_pop'] = np.mean(tm_state_evolution[4][t1:]) * self.tag['W40'] / (np.mean(tm_state_evolution[6][t1:]) * self.tag['W60'] + np.mean(tm_state_evolution[5][t1:]) * self.tag['W50'])
+        sim_stats['red_green_ratio_pop'] = np.mean(tm_state_evolution[4][t1:]) * self.tag['W40'] / (np.mean(tm_state_evolution[6][t1:]) * self.tag['W60'] + np.mean(tm_state_evolution[5][t1:]) * self.tag['W50'])
         sim_stats['red_green_total_avg_pop'] = np.mean(tm_state_evolution[4][t1:]) * self.tag['W40'] + np.mean(tm_state_evolution[6][t1:]) * self.tag['W60'] + np.mean(tm_state_evolution[5][t1:]) * self.tag['W50'] 
         sim_stats['green50_avg_pop'] = np.mean(tm_state_evolution[5][t1:]) * self.tag['W50']
         sim_stats['green60_avg_pop'] = np.mean(tm_state_evolution[6][t1:]) * self.tag['W60']
