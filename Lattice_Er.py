@@ -21,7 +21,7 @@ import plotly.graph_objects as go
 from tqdm import tqdm
 from scipy.integrate import odeint
 
-class Lattice_Er():
+class Lattice_er():
     
     def __init__(self, Yb_conc, Er_conc, d, r, seed = None):
 
@@ -31,9 +31,9 @@ class Lattice_Er():
         # Create the lattice
         l_r = int(d/2/0.596)
         l_z = int(d/2/0.353)
-        na_points = [Point_Er((i, j, k), mol = 'Na') for i in range(-l_r, l_r+1) for j in range(-l_r, l_r+1) for k in range(-l_z, l_z+1)]
-        y_coords = [Point_Er((na.p[0]+1/3, na.p[1]+1/3, na.p[2]+1/2)) for na in na_points]
-        y_coords = y_coords + [Point_Er((na.p[0]-1/3, na.p[1]-1/3, na.p[2]+1/2)) for na in na_points]
+        na_points = [Point_er((i, j, k), mol = 'Na') for i in range(-l_r, l_r+1) for j in range(-l_r, l_r+1) for k in range(-l_z, l_z+1)]
+        y_coords = [Point_er((na.p[0]+1/3, na.p[1]+1/3, na.p[2]+1/2)) for na in na_points]
+        y_coords = y_coords + [Point_er((na.p[0]-1/3, na.p[1]-1/3, na.p[2]+1/2)) for na in na_points]
         na_points = self.in_diameter(d, na_points)
         y_coords = self.in_diameter(d, y_coords)
         n_points = int(len(y_coords) * 3/4)  # 3/4 probability for Y/Yb/Tm
@@ -65,7 +65,7 @@ class Lattice_Er():
         self.y_points = y_points # Y/Yb/Tm points
 
         self.points = [p for p in self.y_points if p.type != 'Y'] # rare earth doping points, Yb/Tm
-        
+
         self.n_points = len(self.points) # number of Yb/Tm points
 
         self.get_neighbors(r)
@@ -87,7 +87,7 @@ class Lattice_Er():
         self.neighbors = ret
 
     def in_diameter(self, d, points):
-        origin = Point_Er((0,0,0))
+        origin = Point_er((0,0,0))
         ret = []
         for point in points:
             if point.to(origin) < d/2:
@@ -117,7 +117,7 @@ class Lattice_Er():
         # ALERT: na_points is not deep copied
 
         # print(np.random.get_state())
-        cp = Lattice_Er(self.Yb_conc, self.Er_conc, self.d, self.r)
+        cp = Lattice_er(self.Yb_conc, self.Er_conc, self.d, self.r)
         cp.Yb_conc = self.Yb_conc
         cp.Er_conc = self.Er_conc 
         cp.d = self.d

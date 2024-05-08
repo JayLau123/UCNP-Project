@@ -3,7 +3,7 @@ from utils import to_euclidean, e_distance
 from EnergyTransfer import *
 
 
-class Point_Er():
+class Point_er():
     
     def __init__(self, coor, mol=None, state=None):
         self.p = coor
@@ -28,9 +28,9 @@ class Point_Er():
         return e_distance(evec)
     
     def deep_copy(self):
-        return Point_Er(self.p, self.type, self.state)
+        return Point_er(self.p, self.type, self.state)
     
-    def react(self, other, cross_relaxation, up_conversion, yb_yb, distance):
+    def react(self, other, cross_relaxation_Er, up_conversion_Er, yb_yb, distance):
 
         # return rate, new states
         if self.type == 'Yb' and self.state == 1:
@@ -50,13 +50,13 @@ class Point_Er():
     def get_decay_rates(self, tag):
         ret = []
         for i in range(self.state):
-            ret.append(tag[f'W{self.state}{i}'])
+            ret.append(tag[f'E{self.state}E{i}'])
         return ret
 
     def __str__(self):
         return f'{self.p} {self.type} {self.state}'
     
     def __eq__(self, other):
-        if isinstance(other, Point_Er):
+        if isinstance(other, Point_er):
             return self.p[0] == other.p[0] and self.p[1] == other.p[1] and self.p[2] == other.p[2]
         return False

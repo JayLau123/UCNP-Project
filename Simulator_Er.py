@@ -21,7 +21,7 @@ tag_default={'c0':9.836062e-40, # Yb-Yb resonant energy transfer
 
 
 
-class Simulator_Er():
+class Simulator_er():
 
     def __init__(self, lattice, tag = None, dt = 10**(-6)):
 
@@ -129,7 +129,7 @@ class Simulator_Er():
                     prob_sum = sum(ET_rates)
                     ET_rates = [i/prob_sum for i in ET_rates]
                 
-                    nei = random.choices(pairs, ET_rates)[0] # extracts the first item from the chosen pair: the first item of (nei, pair) is nei
+                    nei, _ = random.choices(pairs, ET_rates)[0] # extracts the first item from the chosen pair: the first item of (nei, pair) is nei
 
                     if p.type == 'Yb' and nei.type == 'Yb':
                         p.state = 0
@@ -154,7 +154,7 @@ class Simulator_Er():
 
 
             # laser excites ground state yb to excited yb
-            for p in self.lattice.ground_yb: 
+            for p in self.lattice.ground_Yb: 
                 if np.random.rand() < self.dt*self.tag['laser']:
                     p.state = 1
                     yb_excite += 1
@@ -162,7 +162,7 @@ class Simulator_Er():
 
             # update new excited state Yb and Er, and update new ground state Yb
             self.lattice.excited = [p for p in self.lattice.points if p.state != 0]
-            self.lattice.ground_yb = [p for p in self.lattice.points if p.type == 'Yb' and p.state == 0]
+            self.lattice.ground_Yb = [p for p in self.lattice.points if p.type == 'Yb' and p.state == 0]
             self.t += 1
 
             if emission:
@@ -301,7 +301,9 @@ class Simulator_Er():
         # calculate red and green by population * rate
         sim_stats['red_avg_pop'] = np.mean(er_state_evolution[4][t1:]) * self.tag['E4E0']
         sim_stats['green_avg_pop'] = np.mean(er_state_evolution[6][t1:]) * self.tag['E6E0'] + np.mean(er_state_evolution[5][t1:]) * self.tag['E5E0'] 
-        sim_stats['red_green_ratio_pop'] = np.mean(er_state_evolution[4][t1:]) * self.tag['E4E0'] / (np.mean(er_state_evolution[6][t1:]) * self.tag['E6E0'] + np.mean(er_state_evolution[5][t1:]) * self.tag['E5E0'])
+
+        sim_stats['red_green_ratio_pop'] = sim_stats['red_avg_pop'] / sim_stats['green_avg_pop']
+
         sim_stats['red_green_total_avg_pop'] = np.mean(er_state_evolution[4][t1:]) * self.tag['E4E0'] + np.mean(er_state_evolution[6][t1:]) * self.tag['E6E0'] + np.mean(er_state_evolution[5][t1:]) * self.tag['E5E0'] 
         sim_stats['green50_avg_pop'] = np.mean(er_state_evolution[5][t1:]) * self.tag['E5E0']
         sim_stats['green60_avg_pop'] = np.mean(er_state_evolution[6][t1:]) * self.tag['E6E0']

@@ -136,6 +136,13 @@ def up_conversion_Er():
  
    ret = {}
 
+
+   delta_E_ion1 = {}
+   Yb_keys = list(Yb_energy.keys())
+   new_key = Yb_keys[1] + Yb_keys[0]
+   new_value = Yb_energy[Yb_keys[1]] - Yb_energy[Yb_keys[0]]
+   delta_E_ion1[new_key] = new_value # {'S1S0': 10246}
+
    for ion2_energy in E_levels:
 
       ion2_parts = ion2_energy.split('E')
@@ -144,19 +151,13 @@ def up_conversion_Er():
 
       all_transitions = {}
 
-      delta_E_ion1 = {}
-      Yb_keys = list(Yb_energy.keys())
-      new_key = Yb_keys[1] + Yb_keys[0]
-      new_value = Yb_energy[Yb_keys[1]] - Yb_energy[Yb_keys[0]]
-      delta_E_ion1[new_key] = new_value # {'S1S0': 10246}
-
       delta_E_ion2 = {f'{ion2_energy}{level}':  E_levels[ion2_energy] -  E_levels[level] for level in E_levels if level != ion2_energy}
    
       for transition2, energy_diff2 in delta_E_ion2.items():
 
          ################################################################# important: ET matching condition
-         if (energy_diff2 < 0 and abs(10246 + energy_diff2)< n*E_phonon):
-            Delta_E = abs(10246 + energy_diff2)
+         if (energy_diff2 < 0 and abs(delta_E_ion1['S1S0'] + energy_diff2)< n*E_phonon):
+            Delta_E = abs(delta_E_ion1['S1S0'] + energy_diff2)
             key = f'S1S0-{transition2}'
             all_transitions[key] = Delta_E
          
@@ -202,6 +203,12 @@ def up_conversion_Tm():
  
    ret = {}
 
+   delta_E_ion1 = {}
+   Yb_keys = list(Yb_energy.keys())
+   new_key = Yb_keys[1] + Yb_keys[0]
+   new_value = Yb_energy[Yb_keys[1]] - Yb_energy[Yb_keys[0]]
+   delta_E_ion1[new_key] = new_value # {'S1S0': 10246}
+
    for ion2_energy in E_levels:
 
       ion2_parts = ion2_energy.split('E')
@@ -209,20 +216,13 @@ def up_conversion_Tm():
       ion2_et = UpConversion(ion2_initial_state)
 
       all_transitions = {}
-
-      delta_E_ion1 = {}
-      Yb_keys = list(Yb_energy.keys())
-      new_key = Yb_keys[1] + Yb_keys[0]
-      new_value = Yb_energy[Yb_keys[1]] - Yb_energy[Yb_keys[0]]
-      delta_E_ion1[new_key] = new_value # {'S1S0': 10246}
-
       delta_E_ion2 = {f'{ion2_energy}{level}':  E_levels[ion2_energy] -  E_levels[level] for level in E_levels if level != ion2_energy}
    
       for transition2, energy_diff2 in delta_E_ion2.items():
 
          ################################################################# important: ET matching condition
-         if (energy_diff2 < 0 and abs(10246 + energy_diff2)< n*E_phonon):
-            Delta_E = abs(10246 + energy_diff2)
+         if (energy_diff2 < 0 and abs(delta_E_ion1['S1S0'] + energy_diff2)< n*E_phonon):
+            Delta_E = abs(delta_E_ion1['S1S0'] + energy_diff2)
             key = f'S1S0-{transition2}'
             all_transitions[key] = Delta_E
          

@@ -81,7 +81,7 @@ tag_default={'c0':9.836062e-40, # Yb-Yb resonant energy transfer
 
 
 
-class Simulator_Tm():
+class Simulator_tm():
 
     def __init__(self, lattice, tag = None, dt = 10**(-6)):
 
@@ -226,7 +226,7 @@ class Simulator_Tm():
                     prob_sum = sum(ET_rates)
                     ET_rates = [i/prob_sum for i in ET_rates]
                 
-                    nei = random.choices(pairs, ET_rates)[0] # extracts the first item from the chosen pair: the first item of (nei, pair) is nei
+                    nei, _ = random.choices(pairs, ET_rates)[0] # extracts the first item from the chosen pair: the first item of (nei, pair) is nei ################
 
                     if p.type == 'Yb' and nei.type == 'Yb':
                         p.state = 0
@@ -251,7 +251,7 @@ class Simulator_Tm():
 
 
             # laser excites ground state yb to excited yb
-            for p in self.lattice.ground_yb: 
+            for p in self.lattice.ground_Yb: 
                 if np.random.rand() < self.dt*self.tag['laser']:
                     p.state = 1
                     yb_excite += 1
@@ -259,7 +259,7 @@ class Simulator_Tm():
 
             # update new excited state Yb and Tm, and update new ground state Yb
             self.lattice.excited = [p for p in self.lattice.points if p.state != 0]
-            self.lattice.ground_yb = [p for p in self.lattice.points if p.type == 'Yb' and p.state == 0]
+            self.lattice.ground_Yb = [p for p in self.lattice.points if p.type == 'Yb' and p.state == 0]
             self.t += 1
 
             if emission:
@@ -469,7 +469,7 @@ class Simulator_Tm():
 
 
         sim_stats['NIR_blue_ratio_pop'] = sim_stats['NIR_avg_pop'] / sim_stats['blue_avg_pop']
-        sim_stats['red_green_total_avg_pop'] = sim_stats['NIR_avg_pop'] + sim_stats['blue_avg_pop']
+        sim_stats['NIR_blue_total_avg_pop'] = sim_stats['NIR_avg_pop'] + sim_stats['blue_avg_pop']
    
         sim_stats['yb_upconversions'] = yb_upconversions
         sim_stats['yb_ybs'] = yb_ybs

@@ -21,7 +21,7 @@ import plotly.graph_objects as go
 from tqdm import tqdm
 from scipy.integrate import odeint
 
-class Lattice_Tm():
+class Lattice_tm():
     
     def __init__(self, Yb_conc, Tm_conc, d, r, seed = None):
 
@@ -31,9 +31,9 @@ class Lattice_Tm():
         # Create the lattice
         l_r = int(d/2/0.596)
         l_z = int(d/2/0.353)
-        na_points = [Point_Tm((i, j, k), mol = 'Na') for i in range(-l_r, l_r+1) for j in range(-l_r, l_r+1) for k in range(-l_z, l_z+1)]
-        y_coords = [Point_Tm((na.p[0]+1/3, na.p[1]+1/3, na.p[2]+1/2)) for na in na_points]
-        y_coords = y_coords + [Point_Tm((na.p[0]-1/3, na.p[1]-1/3, na.p[2]+1/2)) for na in na_points]
+        na_points = [Point_tm((i, j, k), mol = 'Na') for i in range(-l_r, l_r+1) for j in range(-l_r, l_r+1) for k in range(-l_z, l_z+1)]
+        y_coords = [Point_tm((na.p[0]+1/3, na.p[1]+1/3, na.p[2]+1/2)) for na in na_points]
+        y_coords = y_coords + [Point_tm((na.p[0]-1/3, na.p[1]-1/3, na.p[2]+1/2)) for na in na_points]
         na_points = self.in_diameter(d, na_points)
         y_coords = self.in_diameter(d, y_coords)
         n_points = int(len(y_coords) * 3/4)  # 3/4 probability for Y/Yb/Tm
@@ -68,6 +68,7 @@ class Lattice_Tm():
         self.n_points = len(self.points) # number of Yb/Tm points
 
         self.get_neighbors(r)
+
         self.excited = [p for p in self.points if p.state != 0]
         self.ground_Yb = [p for p in self.points if p.type == 'Yb'  and p.state == 0]
     
@@ -87,7 +88,7 @@ class Lattice_Tm():
         self.neighbors = ret
 
     def in_diameter(self, d, points):
-        origin = Point_Tm((0,0,0))
+        origin = Point_tm((0,0,0))
         ret = []
         for point in points:
             if point.to(origin) < d/2:
@@ -117,7 +118,7 @@ class Lattice_Tm():
         # ALERT: na_points is not deep copied
 
         # print(np.random.get_state())
-        cp = Lattice_Tm(self.Yb_conc, self.Tm_conc, self.d, self.r)
+        cp = Lattice_tm(self.Yb_conc, self.Tm_conc, self.d, self.r)
         cp.Yb_conc = self.Yb_conc
         cp.Tm_conc = self.Tm_conc 
         cp.d = self.d
