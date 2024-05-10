@@ -1,4 +1,5 @@
 import plotly.graph_objects as go
+import numpy as np
 
 class SaturationPlot:
     def __init__(self, data):
@@ -18,11 +19,12 @@ class SaturationPlot:
 
         # Initialize the plot
         fig = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
 
         # Iterate through each percentage to add traces to the plot
-        for percentage in percentages:
+        for i, percentage in enumerate(percentages):
             green_values = []
-            
+            color = colors[i]
             for power_density in power_densities:
                 if power_density in self.data[percentage]:
                     green_values.append(self.data[percentage][power_density]['green_avg_pop'])
@@ -31,7 +33,9 @@ class SaturationPlot:
 
             # Add traces for each color
             fig.add_trace(go.Scatter(
-                x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}', marker=dict(size=8)
+                x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
+                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
+                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
             ))
 
         # Update layout
