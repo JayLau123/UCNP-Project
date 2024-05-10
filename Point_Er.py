@@ -48,7 +48,7 @@ class Point():
     def get_decay_rates(self, tag):
         ret = []
         for i in range(self.state):
-            ret.append(tag[f'W{self.state}{i}'])
+            ret.append(tag[f'E{self.state}E{i}'])
         return ret
 
     def __str__(self):
