@@ -20,7 +20,7 @@ tag_default={'c0':9.836062e-40, # Yb-Yb resonant energy transfer
 
 class Simulator():
 
-    def __init__(self, lattice, tag = None, dt = 10**(-6)):
+    def __init__(self, lattice, tag = None, dt = 10**(-6), excite_er = False):
 
         # get_nerighbors(self, r):
         #    self.neighbors = ret 
@@ -37,6 +37,7 @@ class Simulator():
 
         self.cross_relaxation = cross_relaxation()
         self.up_conversion = up_conversion()        
+        self.excite_er = excite_er
 
     def step(self, steps = 1, emission = False):
 
@@ -50,6 +51,8 @@ class Simulator():
             er_decays = []
             er_upconversions = []
             er_crossrelaxations = []
+            er_excite_02s = []
+            er_excite_27s = []
 
         for _ in range(steps):
 
@@ -63,6 +66,8 @@ class Simulator():
                 er_decay = {} # including MPR and MD
                 er_upconversion = {}
                 er_crossrelaxation = {}
+                er_excite_02 = 0
+                er_excite_27 = 0
 
             np.random.shuffle(self.lattice.excited)
 
@@ -139,6 +144,15 @@ class Simulator():
                     p.state = 1
                     yb_excite += 1
             
+            for p in [point for point in self.lattice.points if point.type != 'Er' and p.state == 2]:
+                if np.random.rand() < self.dt*self.tag['laser_er']:
+                    p.state = 7
+                    er_excite_27 += 1
+            for p in [point for point in self.lattice.points if point.type != 'Er' and p.state == 0]:
+                if np.random.rand() < self.dt*self.tag['laser_er']:
+                    p.state = 2
+                    er_excite_02 += 1
+            
             # update new excited state Yb and Er, and update new ground state Yb
             self.lattice.excited = [p for p in self.lattice.points if p.state != 0]
             self.lattice.ground_yb = [p for p in self.lattice.points if p.type == 'Yb' and p.state == 0]
@@ -154,6 +168,8 @@ class Simulator():
                 er_decays.append(er_decay)
                 er_upconversions.append(er_upconversion)
                 er_crossrelaxations.append(er_crossrelaxation)
+                er_excite_27s.append(er_excite_27)
+                er_excite_02s.append(er_excite_02)
         
         if emission:
  
@@ -173,6 +189,8 @@ class Simulator():
                 step_data['er_decays'] = er_decays[0]
                 step_data['er_upconversions'] = er_upconversions[0]
                 step_data['er_crossrelaxations'] = er_crossrelaxations[0]
+                step_data['er_excite_02s'] = er_excite_02s[0]
+                step_data['er_excite_27s'] = er_excite_27s[0]
                 return step_data
             
             # else: 
@@ -225,6 +243,8 @@ class Simulator():
         er_decays = [] # including MPR and MD
         er_upconversions = []
         er_crossrelaxations = []
+        er_excite_02s = []
+        er_excite_27s = []
         
         for _ in tqdm(range(t2-t1)):
 
@@ -256,6 +276,8 @@ class Simulator():
             er_decays.append(r['er_decays'])
             er_upconversions.append(r['er_upconversions'])
             er_crossrelaxations.append(r['er_crossrelaxations'])
+            er_excite_02s.append(r['er_excite_02s'])
+            er_excite_27s.append(r['er_excite_27s'])
             
         # self.plot_stats(yb_stats, er_stats)
         sim_stats = {}
@@ -295,6 +317,8 @@ class Simulator():
         sim_stats['er_decays'] = er_decays
         sim_stats['er_upconversions'] = er_upconversions
         sim_stats['er_crossrelaxations'] = er_crossrelaxations
+        sim_stats['er_excite_02s'] = er_excite_02s
+        sim_stats['er_excite_27s'] = er_excite_27s
 
         return sim_stats
     
