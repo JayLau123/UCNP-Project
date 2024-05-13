@@ -13,12 +13,13 @@ class SinglePowerDensityPlot:
         Parameters:
         - output_file (str): Optional, path to save the plot as an HTML file.
         """
-        # Prepare data for plotting
+
         percentages = sorted(self.data.keys())
+        
         Red = []
         Green = []
 
-        # Iterate through each percentage to add traces for the selected power density
+    
         for percentage in percentages:
             if self.selected_power_density in self.data[percentage]:
                 red_value = self.data[percentage][self.selected_power_density]['red_avg_pop']
@@ -26,7 +27,7 @@ class SinglePowerDensityPlot:
                 green_value = self.data[percentage][self.selected_power_density]['green_avg_pop']
                 Green.append(green_value)
 
-        # Initialize the plot
+
         fig = go.Figure()
 
         fig.add_trace(go.Scatter(
@@ -36,7 +37,7 @@ class SinglePowerDensityPlot:
             x=percentages, y=Green, mode='lines+markers', name='Green emission', line=dict(color='green'), marker=dict(size=8)
         ))
 
-        # Update layout
+
         fig.update_layout(
             title=f'Brightness vs. Percentage at Power Density {self.selected_power_density} W/cm²',
             xaxis=dict(
@@ -61,7 +62,7 @@ class SinglePowerDensityPlot:
             template='plotly_white'
         )
 
-        # Display the plot
+   
         fig.show()
 
         # Save the plot if the output file is specified

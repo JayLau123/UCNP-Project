@@ -14,20 +14,20 @@ class PopulationEvolutionPlot:
         Parameters:
         - output_file (str): Optional, path to save the plot as an HTML file.
         """
-        # Extract the population evolution data
+
         pop_evolution = self.data[self.percentage][self.power_density]['tm_distribution']
 
-        # Determine the total number of steps
+
         total_steps = max(len(values) for values in pop_evolution.values())
         steps = list(range(1, total_steps + 1))
 
-        # Initialize the plot
+
         fig = go.Figure()
 
         for key, values in pop_evolution.items():
             fig.add_trace(go.Scatter(x=steps, y=values, mode='lines', name=f'Energy level {key}', marker=dict(size=3)))
 
-        # Update layout and axes
+   
         fig.update_xaxes(
             title_text='Simulation Steps (Real time = step * 1us)',
             title_font=dict(size=20, color='black'),
@@ -62,7 +62,6 @@ class PopulationEvolutionPlot:
             )
         )
 
-        # Display the plot
         fig.show()
 
         # Save the plot if the output file is specified
