@@ -81,7 +81,7 @@ tag_default={'c0':9.836062e-40, # Yb-Yb resonant energy transfer
 
 class Simulator():
 
-    def __init__(self, lattice, tag = None, dt = 10**(-6)):
+    def __init__(self, lattice, tag = None, dt = 10**(-6), excite_tm = False):
 
         # get_nerighbors(self, r):
         #    self.neighbors = ret 
@@ -97,7 +97,8 @@ class Simulator():
             self.tag = tag_default
 
         self.cross_relaxation = cross_relaxation()
-        self.up_conversion = up_conversion()        
+        self.up_conversion = up_conversion()    
+        self.excite_tm = excite_tm
 
     def step(self, steps = 1, emission = False):
 
@@ -122,6 +123,8 @@ class Simulator():
             tm_upconversions = []
             tm_crossrelaxations = []
 
+            tm_excite_7_11s = []
+
 
         for _ in range(steps):
 
@@ -140,6 +143,8 @@ class Simulator():
                 yb_upconversion = 0
                 yb_yb = 0
                 yb_excite = 0
+
+                tm_excite_7_11 = 0
 
                 tm_decay = {} # including MPR and MD
                 tm_upconversion = {}
@@ -240,6 +245,13 @@ class Simulator():
                 if np.random.rand() < self.dt*self.tag['laser']:
                     p.state = 1
                     yb_excite += 1
+
+            for p in [point for point in self.lattice.points if point.type == 'Tm' and point.state == 7]:
+                if np.random.rand() < self.dt*self.tag['laser_tm']:
+                    p.state = 11
+                    tm_excite_7_11 += 1
+
+
             
             # update new excited state Yb and Tm, and update new ground state Yb
             self.lattice.excited = [p for p in self.lattice.points if p.state != 0]
@@ -264,6 +276,8 @@ class Simulator():
                 tm_decays.append(tm_decay)
                 tm_upconversions.append(tm_upconversion)
                 tm_crossrelaxations.append(tm_crossrelaxation)
+
+                tm_excite_7_11s.append(tm_excite_7_11)
         
 
         if emission:
@@ -288,6 +302,7 @@ class Simulator():
                 step_data['tm_decays'] = tm_decays[0]
                 step_data['tm_upconversions'] = tm_upconversions[0]
                 step_data['tm_crossrelaxations'] = tm_crossrelaxations[0]
+                step_data['tm_excite_7_11s'] = tm_excite_7_11s[0]
 
                 return step_data
             
@@ -349,6 +364,8 @@ class Simulator():
         tm_upconversions = []
         tm_crossrelaxations = []
 
+        tm_excite_7_11s = []
+
         
         for _ in tqdm(range(t2-t1)):
 
@@ -390,6 +407,8 @@ class Simulator():
             tm_decays.append(r['tm_decays'])
             tm_upconversions.append(r['tm_upconversions'])
             tm_crossrelaxations.append(r['tm_crossrelaxations'])
+            
+            tm_excite_7_11s.append(r['tm_excite_7_11s'])
             
         # self.plot_stats(yb_stats, tm_stats)
         sim_stats = {}
@@ -448,6 +467,9 @@ class Simulator():
         sim_stats['tm_decays'] = tm_decays
         sim_stats['tm_upconversions'] = tm_upconversions
         sim_stats['tm_crossrelaxations'] = tm_crossrelaxations
+
+        sim_stats['tm_excite_7_11s'] = tm_excite_7_11s
+
         return sim_stats
     
 

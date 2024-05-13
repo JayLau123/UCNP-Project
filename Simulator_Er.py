@@ -42,6 +42,7 @@ class Simulator():
     def step(self, steps = 1, emission = False):
 
         if emission:
+
             red40s = []
             green50s = []
             green60s = []
@@ -51,23 +52,28 @@ class Simulator():
             er_decays = []
             er_upconversions = []
             er_crossrelaxations = []
+
+            # consider the Er excitation from laser: E0 to E2, E2 to E7
             er_excite_02s = []
             er_excite_27s = []
 
         for _ in range(steps):
 
             if emission:
+
                 red40 = 0
                 green50 = 0
                 green60 = 0
                 yb_upconversion = 0
                 yb_yb = 0
                 yb_excite = 0
+
+                er_excite_02 = 0
+                er_excite_27 = 0
+
                 er_decay = {} # including MPR and MD
                 er_upconversion = {}
                 er_crossrelaxation = {}
-                er_excite_02 = 0
-                er_excite_27 = 0
 
             np.random.shuffle(self.lattice.excited)
 
@@ -144,11 +150,12 @@ class Simulator():
                     p.state = 1
                     yb_excite += 1
             
-            for p in [point for point in self.lattice.points if point.type != 'Er' and p.state == 2]:
+            # 
+            for p in [point for point in self.lattice.points if point.type == 'Er' and point.state == 2]:
                 if np.random.rand() < self.dt*self.tag['laser_er']:
                     p.state = 7
                     er_excite_27 += 1
-            for p in [point for point in self.lattice.points if point.type != 'Er' and p.state == 0]:
+            for p in [point for point in self.lattice.points if point.type == 'Er' and point.state == 0]:
                 if np.random.rand() < self.dt*self.tag['laser_er']:
                     p.state = 2
                     er_excite_02 += 1
@@ -159,6 +166,7 @@ class Simulator():
             self.t += 1
 
             if emission:
+
                 red40s.append(red40)
                 green50s.append(green50)
                 green60s.append(green60)
@@ -168,6 +176,7 @@ class Simulator():
                 er_decays.append(er_decay)
                 er_upconversions.append(er_upconversion)
                 er_crossrelaxations.append(er_crossrelaxation)
+
                 er_excite_27s.append(er_excite_27)
                 er_excite_02s.append(er_excite_02)
         
@@ -189,8 +198,10 @@ class Simulator():
                 step_data['er_decays'] = er_decays[0]
                 step_data['er_upconversions'] = er_upconversions[0]
                 step_data['er_crossrelaxations'] = er_crossrelaxations[0]
+
                 step_data['er_excite_02s'] = er_excite_02s[0]
                 step_data['er_excite_27s'] = er_excite_27s[0]
+
                 return step_data
             
             # else: 
@@ -243,6 +254,7 @@ class Simulator():
         er_decays = [] # including MPR and MD
         er_upconversions = []
         er_crossrelaxations = []
+
         er_excite_02s = []
         er_excite_27s = []
         
@@ -302,12 +314,12 @@ class Simulator():
         # calculate red and green by population * rate
         sim_stats['red_avg_pop'] = np.mean(er_state_evolution[4][t1:]) * self.tag['E4E0']
         sim_stats['green_avg_pop'] = np.mean(er_state_evolution[6][t1:]) * self.tag['E6E0'] + np.mean(er_state_evolution[5][t1:]) * self.tag['E5E0'] 
-
-        sim_stats['red_green_ratio_pop'] = sim_stats['red_avg_pop'] / sim_stats['green_avg_pop']
-
-        sim_stats['red_green_total_avg_pop'] = np.mean(er_state_evolution[4][t1:]) * self.tag['E4E0'] + np.mean(er_state_evolution[6][t1:]) * self.tag['E6E0'] + np.mean(er_state_evolution[5][t1:]) * self.tag['E5E0'] 
         sim_stats['green50_avg_pop'] = np.mean(er_state_evolution[5][t1:]) * self.tag['E5E0']
         sim_stats['green60_avg_pop'] = np.mean(er_state_evolution[6][t1:]) * self.tag['E6E0']
+
+        sim_stats['red_green_ratio_pop'] = sim_stats['red_avg_pop'] / sim_stats['green_avg_pop']
+        sim_stats['red_green_total_avg_pop'] = np.mean(er_state_evolution[4][t1:]) * self.tag['E4E0'] + np.mean(er_state_evolution[6][t1:]) * self.tag['E6E0'] + np.mean(er_state_evolution[5][t1:]) * self.tag['E5E0'] 
+       
 
 
 
