@@ -7,7 +7,7 @@ The Monte Carlo model, which is currently in the refinement stage to ensure its 
 #### Ion spatial distribution
 
 
-The model conceptualizes nanoparticles as hexagonal crystal structures($\beta$-phase), where $\mathrm{Yb^{3+}}$ or $\mathrm{Tm^{3+}$} ions are randomly distributed. This approach not only captures the inherent spatial relationships characteristic of hexagonal crystallinity but also facilitates a realistic representation of ion dispersion within the nanoparticle matrix.
+The model conceptualizes nanoparticles as hexagonal crystal structures($\beta$-phase), where $\mathrm{Yb^{3+}}$ or $\mathrm{Tm^{3+}}$ ions are randomly distributed. This approach not only captures the inherent spatial relationships characteristic of hexagonal crystallinity but also facilitates a realistic representation of ion dispersion within the nanoparticle matrix.
 
 #### Critical interacting distance $R_0$
 
