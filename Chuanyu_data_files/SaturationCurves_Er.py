@@ -19,8 +19,6 @@ class SaturationPlot:
 
 
 
-
-
         # sim_stats['red_avg_pop']
         # sim_stats['green_avg_pop'] 
         # sim_stats['green50_avg_pop'] 
