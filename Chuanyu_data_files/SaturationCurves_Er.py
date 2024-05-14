@@ -48,7 +48,7 @@ class SaturationPlot:
 
         # Update layout
         fig1.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(green50+green60)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -75,32 +75,30 @@ class SaturationPlot:
         fig1.show()
 
 
-
-
-        # red total
+        # green total
         fig2 = go.Figure()
         colors = np.linspace(0, 1, len(self.data))
 
         # Iterate through each percentage to add traces to the plot
         for i, percentage in enumerate(percentages):
-            red_values = []
+            green_values = []
             color = colors[i]
             for power_density in power_densities:
                 if power_density in self.data[percentage]:
-                    red_values.append(self.data[percentage][power_density]['red_avg_pop'])
+                    green_values.append(self.data[percentage][power_density]['green50_avg_pop'])
                 else:
-                    red_values.append(None)
+                    green_values.append(None)
 
             # Add traces for each color
             fig2.add_trace(go.Scatter(
-                x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
+                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
+                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
             ))
 
         # Update layout
         fig2.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(green50)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -125,6 +123,111 @@ class SaturationPlot:
         )
 
         fig2.show()
+
+
+        # green total
+        fig3 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        # Iterate through each percentage to add traces to the plot
+        for i, percentage in enumerate(percentages):
+            green_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    green_values.append(self.data[percentage][power_density]['green60_avg_pop'])
+                else:
+                    green_values.append(None)
+
+            # Add traces for each color
+            fig3.add_trace(go.Scatter(
+                x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
+                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
+                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig3.update_layout(
+            title='Saturation Curves(green60)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+
+        fig3.show()
+
+
+
+
+
+
+
+        # red total
+        fig4 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        # Iterate through each percentage to add traces to the plot
+        for i, percentage in enumerate(percentages):
+            red_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    red_values.append(self.data[percentage][power_density]['red_avg_pop'])
+                else:
+                    red_values.append(None)
+
+            # Add traces for each color
+            fig4.add_trace(go.Scatter(
+                x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
+                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
+                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig4.update_layout(
+            title='Saturation Curves',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+
+        fig4.show()
 
 
 

@@ -42,7 +42,7 @@ class SaturationPlot:
 
         # Update layout
         fig1.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(NIR30+NIR62+NIR75)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -94,7 +94,7 @@ class SaturationPlot:
 
         # Update layout
         fig1.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(NIR30)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -147,7 +147,7 @@ class SaturationPlot:
 
         # Update layout
         fig1.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(NIR62)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -200,7 +200,7 @@ class SaturationPlot:
 
         # Update layout
         fig1.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(NIR75)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -255,7 +255,7 @@ class SaturationPlot:
 
         # Update layout
         fig2.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(blue60+blue71+blue83+blue10_4+blue10_5)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -310,7 +310,7 @@ class SaturationPlot:
 
         # Update layout
         fig2.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(blue60)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -364,7 +364,7 @@ class SaturationPlot:
 
         # Update layout
         fig2.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(blue71)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -420,7 +420,7 @@ class SaturationPlot:
 
         # Update layout
         fig2.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(blue83)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -475,7 +475,7 @@ class SaturationPlot:
 
         # Update layout
         fig2.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(blue10_4)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -531,7 +531,7 @@ class SaturationPlot:
 
         # Update layout
         fig2.update_layout(
-            title='Saturation Curves',
+            title='Saturation Curves(blue10_5)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
