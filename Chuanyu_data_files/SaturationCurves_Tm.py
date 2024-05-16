@@ -35,7 +35,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig1.add_trace(go.Scatter(
-                x=power_densities, y=NIR_values, mode='lines+markers', name=f'NIR {percentage}',
+                x=power_densities, y=NIR_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
                 line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
                 marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
             ))
@@ -87,7 +87,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig1.add_trace(go.Scatter(
-                x=power_densities, y=NIR_values, mode='lines+markers', name=f'NIR {percentage}',
+                x=power_densities, y=NIR_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
                 line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
                 marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
             ))
@@ -140,7 +140,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig1.add_trace(go.Scatter(
-                x=power_densities, y=NIR_values, mode='lines+markers', name=f'NIR {percentage}',
+                x=power_densities, y=NIR_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
                 line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
                 marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
             ))
@@ -148,6 +148,58 @@ class SaturationPlot:
         # Update layout
         fig1.update_layout(
             title='Saturation Curves(NIR62)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig1.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig1.write_html(output_file)
+
+        ################################################################################## NIR74
+
+        fig1 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            NIR_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    NIR_values.append(self.data[percentage][power_density]['NIR74_avg_pop'])
+                else:
+                    NIR_values.append(None)
+
+            # Add traces for each color
+            fig1.add_trace(go.Scatter(
+                x=power_densities, y=NIR_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
+                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig1.update_layout(
+            title='Saturation Curves(NIR74)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -193,7 +245,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig1.add_trace(go.Scatter(
-                x=power_densities, y=NIR_values, mode='lines+markers', name=f'NIR {percentage}',
+                x=power_densities, y=NIR_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
                 line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
                 marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
             ))
@@ -201,6 +253,111 @@ class SaturationPlot:
         # Update layout
         fig1.update_layout(
             title='Saturation Curves(NIR75)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig1.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig1.write_html(output_file)
+
+        ################################################################################## NIR86
+
+        fig1 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            NIR_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    NIR_values.append(self.data[percentage][power_density]['NIR86_avg_pop'])
+                else:
+                    NIR_values.append(None)
+
+            # Add traces for each color
+            fig1.add_trace(go.Scatter(
+                x=power_densities, y=NIR_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
+                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig1.update_layout(
+            title='Saturation Curves(NIR86)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig1.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig1.write_html(output_file)
+
+
+        ################################################################################## NIR96
+
+        fig1 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            NIR_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    NIR_values.append(self.data[percentage][power_density]['NIR96_avg_pop'])
+                else:
+                    NIR_values.append(None)
+
+            # Add traces for each color
+            fig1.add_trace(go.Scatter(
+                x=power_densities, y=NIR_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
+                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig1.update_layout(
+            title='Saturation Curves(NIR96)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -246,7 +403,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig2.add_trace(go.Scatter(
-                x=power_densities, y=blue_values, mode='lines+markers', name=f'blue {percentage}',
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
                 line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
@@ -301,7 +458,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig2.add_trace(go.Scatter(
-                x=power_densities, y=blue_values, mode='lines+markers', name=f'blue {percentage}',
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
                 line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
@@ -355,7 +512,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig2.add_trace(go.Scatter(
-                x=power_densities, y=blue_values, mode='lines+markers', name=f'blue {percentage}',
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
                 line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
@@ -365,6 +522,60 @@ class SaturationPlot:
         # Update layout
         fig2.update_layout(
             title='Saturation Curves(blue71)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue72
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue72_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue72)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -411,7 +622,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig2.add_trace(go.Scatter(
-                x=power_densities, y=blue_values, mode='lines+markers', name=f'blue {percentage}',
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
                 line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
@@ -421,6 +632,330 @@ class SaturationPlot:
         # Update layout
         fig2.update_layout(
             title='Saturation Curves(blue83)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue84
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue84_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue84)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue85
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue85_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue85)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue93
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue93_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue93)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue94
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue94_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue94)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue95
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue95_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue95)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue10_3
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue10_3_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue10_3)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -466,7 +1001,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig2.add_trace(go.Scatter(
-                x=power_densities, y=blue_values, mode='lines+markers', name=f'blue {percentage}',
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
                 line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
@@ -522,7 +1057,7 @@ class SaturationPlot:
 
             # Add traces for each color
             fig2.add_trace(go.Scatter(
-                x=power_densities, y=blue_values, mode='lines+markers', name=f'blue {percentage}',
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
                 line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
@@ -532,6 +1067,114 @@ class SaturationPlot:
         # Update layout
         fig2.update_layout(
             title='Saturation Curves(blue10_5)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue11_4
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue11_4_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue11_4)',
+            xaxis=dict(
+                title='Power Densities (W/cm²)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            yaxis=dict(
+                title='Brightness (pps)',
+                type='log',
+                title_font=dict(size=18),
+                tickfont=dict(size=18),
+                showgrid=True,
+                gridcolor='lightgrey'
+            ),
+            legend_title='Percentages',
+            width=1000, height=800,
+            title_x=0.5,
+            title_y=0.95,
+            template='plotly_white'
+        )
+        fig2.show()
+
+        # # Save the plot if the output file is specified
+        # if output_file:
+        #     fig2.write_html(output_file)
+
+        ################################################################################## blue11_5
+
+        fig2 = go.Figure()
+        colors = np.linspace(0, 1, len(self.data))
+
+        for i, percentage in enumerate(percentages):
+            blue_values = []
+            color = colors[i]
+            for power_density in power_densities:
+                if power_density in self.data[percentage]:
+                    blue_values.append(self.data[percentage][power_density]['blue11_5_avg_pop'])
+                else:
+                    blue_values.append(None)
+
+            # Add traces for each color
+            fig2.add_trace(go.Scatter(
+                x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
+
+                # keeping blue as the predominant color, update these lines to control the blue and green components
+                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
+                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+            ))
+
+        # Update layout
+        fig2.update_layout(
+            title='Saturation Curves(blue11_5)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',

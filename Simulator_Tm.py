@@ -106,13 +106,26 @@ class Simulator():
 
             NIR30s = []
             NIR62s = []
+            NIR74s = []
             NIR75s = []
+            NIR86s = []
+            NIR96s = []
+
 
             blue60s = []
             blue71s = []
+            blue72s = []
             blue83s = []
+            blue84s = []
+            blue85s = []
+            blue93s = []
+            blue94s = []
+            blue95s = []
+            blue10_3s = []
             blue10_4s = []
             blue10_5s = []
+            blue11_4s = []
+            blue11_5s = []
 
 
             yb_upconversions = []
@@ -132,13 +145,26 @@ class Simulator():
 
                 NIR30 = 0
                 NIR62 = 0
+                NIR74 = 0
                 NIR75 = 0
+                NIR86 = 0
+                NIR96 = 0
 
                 blue60 = 0
                 blue71 = 0
+                blue72 = 0
                 blue83 = 0
+                blue84 = 0
+                blue85 = 0
+                blue93 = 0
+                blue94 = 0
+                blue95 = 0
+                blue10_3 = 0
                 blue10_4 = 0
                 blue10_5 = 0
+                blue11_4 = 0
+                blue11_5 = 0
+
 
                 yb_upconversion = 0
                 yb_yb = 0
@@ -198,8 +224,18 @@ class Simulator():
                         if p.state == 6 and new_state == 2:
                             NIR62 += 1
 
+                        if p.state == 7 and new_state == 4:
+                            NIR74 += 1
+
                         if p.state == 7 and new_state == 5:
                             NIR75 += 1
+
+                        if p.state == 8 and new_state == 6:
+                            NIR86 += 1
+
+                        if p.state == 9 and new_state == 6:
+                            NIR96 += 1
+
 
 
                         if p.state == 6 and new_state == 0:
@@ -208,14 +244,42 @@ class Simulator():
                         if p.state == 7 and new_state == 1:
                             blue71 += 1
 
+                        if p.state == 7 and new_state == 2:
+                            blue72 += 1
+
                         if p.state == 8 and new_state == 3:
                             blue83 += 1
+
+                        if p.state == 8 and new_state == 4:
+                            blue84 += 1
+
+                        if p.state == 8 and new_state == 5:
+                            blue85 += 1
+
+                        if p.state == 9 and new_state == 3:
+                            blue93 += 1
+
+                        if p.state == 9 and new_state == 4:
+                            blue94 += 1
+
+                        if p.state == 9 and new_state == 5:
+                            blue95 += 1
+
+                        if p.state == 10 and new_state == 3:
+                            blue10_3 += 1
 
                         if p.state == 10 and new_state == 4:
                             blue10_4 += 1
 
                         if p.state == 10 and new_state == 5:
                             blue10_5 += 1
+
+                        if p.state == 11 and new_state == 4:
+                            blue11_4 += 1
+
+                        if p.state == 11 and new_state == 5:
+                            blue11_5 += 1
+
 
                     p.state = new_state
 
@@ -262,12 +326,36 @@ class Simulator():
 
                 NIR30s.append(NIR30)
                 NIR62s.append(NIR62)
+                NIR74s.append(NIR74)
                 NIR75s.append(NIR75)
+                NIR86s.append(NIR86)
+                NIR96s.append(NIR96)
+
+
+
                 blue60s.append(blue60)
                 blue71s.append(blue71)
+                blue72s.append(blue72)
+
                 blue83s.append(blue83)
+                blue84s.append(blue84)
+                blue85s.append(blue85)
+
+                blue93s.append(blue93)
+                blue94s.append(blue94)
+                blue95s.append(blue95)
+
+                blue10_3s.append(blue10_3)
                 blue10_4s.append(blue10_4)
                 blue10_5s.append(blue10_5)
+
+                blue11_4s.append(blue11_4)
+                blue11_5s.append(blue11_5)
+
+
+
+
+
 
                 yb_upconversions.append(yb_upconversion)
                 yb_ybs.append(yb_yb)
@@ -290,8 +378,8 @@ class Simulator():
 
             if steps == 1: 
 
-                step_data['NIR'] = NIR30s[0], NIR62s[0], NIR75s[0]
-                step_data['blue'] = blue60s[0], blue71s[0], blue83s[0], blue10_4s[0], blue10_5s[0]
+                step_data['NIR'] = NIR30s[0], NIR62s[0], NIR74s[0], NIR75s[0], NIR86s[0], NIR96s[0]
+                step_data['blue'] = blue60s[0], blue71s[0], blue72s[0], blue83s[0], blue84s[0], blue85s[0], blue93s[0], blue94s[0], blue95s[0], blue10_3s[0], blue10_4s[0], blue10_5s[0],blue11_4s[0], blue11_5s[0]
 
 
                 step_data['yb_upconversions'] = yb_upconversions[0]
@@ -347,14 +435,34 @@ class Simulator():
         NIRs = []
         NIR30s = []
         NIR62s = []
+        NIR74s = []
         NIR75s = []
+        NIR86s = []
+        NIR96s = []
+
 
         blues = []
+
         blue60s = []
         blue71s = []
+        blue72s = []
+
         blue83s = []
+        blue84s = []
+        blue85s = []
+
+        blue93s = []
+        blue94s = []
+        blue95s = []
+
+        blue10_3s = []
         blue10_4s = []
         blue10_5s = []
+
+        blue11_4s = []
+        blue11_5s = []
+
+
 
 
         yb_upconversions = []
@@ -375,15 +483,30 @@ class Simulator():
 
             NIR30s.append(r['NIR'][0])
             NIR62s.append(r['NIR'][1])
-            NIR75s.append(r['NIR'][2])
+            NIR74s.append(r['NIR'][2])
+            NIR75s.append(r['NIR'][3])
+            NIR86s.append(r['NIR'][4])
+            NIR96s.append(r['NIR'][5])
+
+
 
             blues.append(sum(r['blue']))
 
             blue60s.append(r['blue'][0])
             blue71s.append(r['blue'][1])
-            blue83s.append(r['blue'][2])
-            blue10_4s.append(r['blue'][3])
-            blue10_5s.append(r['blue'][4])
+            blue72s.append(r['blue'][2])
+            blue83s.append(r['blue'][3])
+            blue84s.append(r['blue'][4])
+            blue85s.append(r['blue'][5])
+            blue93s.append(r['blue'][6])
+            blue94s.append(r['blue'][7])
+            blue95s.append(r['blue'][8])
+            blue10_3s.append(r['blue'][9])
+            blue10_4s.append(r['blue'][10])
+            blue10_5s.append(r['blue'][11])
+            blue11_4s.append(r['blue'][12])
+            blue11_5s.append(r['blue'][13])
+
 
 
 
@@ -417,13 +540,33 @@ class Simulator():
 
         sim_stats['NIR30s'] = NIR30s
         sim_stats['NIR62s'] = NIR62s
+        sim_stats['NIR74s'] = NIR74s
         sim_stats['NIR75s'] = NIR75s
+        sim_stats['NIR86s'] = NIR86s
+        sim_stats['NIR96s'] = NIR96s
+
+
+
 
         sim_stats['blue60s'] = blue60s
+
         sim_stats['blue71s'] = blue71s
+        sim_stats['blue72s'] = blue72s
+
         sim_stats['blue83s'] = blue83s
+        sim_stats['blue84s'] = blue84s
+        sim_stats['blue85s'] = blue85s
+
+        sim_stats['blue93s'] = blue83s
+        sim_stats['blue94s'] = blue94s
+        sim_stats['blue95s'] = blue95s
+
+        sim_stats['blue10_3s'] = blue10_3s
         sim_stats['blue10_4s'] = blue10_4s
         sim_stats['blue10_5s'] = blue10_5s
+
+        sim_stats['blue11_4s'] = blue11_4s
+        sim_stats['blue11_5s'] = blue11_5s
        
         
         sim_stats['NIR_avg'] = np.mean(NIRs)
@@ -433,30 +576,67 @@ class Simulator():
 
         sim_stats['NIR30_avg'] = np.mean(NIR30s)
         sim_stats['NIR62_avg'] = np.mean(NIR62s)
+        sim_stats['NIR74_avg'] = np.mean(NIR74s)
         sim_stats['NIR75_avg'] = np.mean(NIR75s)
+        sim_stats['NIR86_avg'] = np.mean(NIR86s)
+        sim_stats['NIR96_avg'] = np.mean(NIR96s)
+
 
         sim_stats['blue60_avg'] = np.mean(blue60s)
+
         sim_stats['blue71_avg'] = np.mean(blue71s)
+        sim_stats['blue72_avg'] = np.mean(blue72s)
+
         sim_stats['blue83_avg'] = np.mean(blue83s)
+        sim_stats['blue84_avg'] = np.mean(blue84s)
+        sim_stats['blue85_avg'] = np.mean(blue85s)
+
+        sim_stats['blue93_avg'] = np.mean(blue93s)
+        sim_stats['blue94_avg'] = np.mean(blue94s)
+        sim_stats['blue95_avg'] = np.mean(blue95s)
+
+        sim_stats['blue10_3_avg'] = np.mean(blue10_3s)
         sim_stats['blue10_4_avg'] = np.mean(blue10_4s)
         sim_stats['blue10_5_avg'] = np.mean(blue10_5s)
+
+        sim_stats['blue11_4_avg'] = np.mean(blue11_4s)
+        sim_stats['blue11_5_avg'] = np.mean(blue11_5s)
+
 
         sim_stats['yb_distribution'] = yb_state_evolution
         sim_stats['tm_distribution'] = tm_state_evolution
 
         # calculate red and green by population * rate
-        sim_stats['NIR_avg_pop'] = np.mean(tm_state_evolution[3][t1:]) * self.tag['E3E0'] + np.mean(tm_state_evolution[6][t1:]) * self.tag['E6E2'] + np.mean(tm_state_evolution[7][t1:]) * self.tag['E7E5']
+        
         sim_stats['NIR30_avg_pop'] = np.mean(tm_state_evolution[3][t1:]) * self.tag['E3E0']
         sim_stats['NIR62_avg_pop'] = np.mean(tm_state_evolution[6][t1:]) * self.tag['E6E2']
+        sim_stats['NIR74_avg_pop'] = np.mean(tm_state_evolution[7][t1:]) * self.tag['E7E4']
         sim_stats['NIR75_avg_pop'] = np.mean(tm_state_evolution[7][t1:]) * self.tag['E7E5']
+        sim_stats['NIR86_avg_pop'] = np.mean(tm_state_evolution[8][t1:]) * self.tag['E8E6']
+        sim_stats['NIR96_avg_pop'] = np.mean(tm_state_evolution[9][t1:]) * self.tag['E9E6']
+        sim_stats['NIR_avg_pop'] = sim_stats['NIR30_avg_pop'] + sim_stats['NIR62_avg_pop'] + sim_stats['NIR74_avg_pop'] + sim_stats['NIR75_avg_pop'] + sim_stats['NIR86_avg_pop'] + sim_stats['NIR96_avg_pop']
 
-        sim_stats['blue_avg_pop'] = np.mean(tm_state_evolution[6][t1:]) * self.tag['E6E0'] + np.mean(tm_state_evolution[7][t1:]) * self.tag['E7E1'] + np.mean(tm_state_evolution[8][t1:]) * self.tag['E8E3']+ np.mean(tm_state_evolution[10][t1:]) * self.tag['E10E4']+ np.mean(tm_state_evolution[10][t1:]) * self.tag['E10E5']
         sim_stats['blue60_avg_pop'] = np.mean(tm_state_evolution[6][t1:]) * self.tag['E6E0'] 
-        sim_stats['blue71_avg_pop'] = np.mean(tm_state_evolution[7][t1:]) * self.tag['E7E1'] 
+        sim_stats['blue71_avg_pop'] = np.mean(tm_state_evolution[7][t1:]) * self.tag['E7E1']
+        sim_stats['blue72_avg_pop'] = np.mean(tm_state_evolution[7][t1:]) * self.tag['E7E2']
+
         sim_stats['blue83_avg_pop'] = np.mean(tm_state_evolution[8][t1:]) * self.tag['E8E3']
+        sim_stats['blue84_avg_pop'] = np.mean(tm_state_evolution[8][t1:]) * self.tag['E8E4']
+        sim_stats['blue85_avg_pop'] = np.mean(tm_state_evolution[8][t1:]) * self.tag['E8E5']
+
+        sim_stats['blue93_avg_pop'] = np.mean(tm_state_evolution[9][t1:]) * self.tag['E9E3']
+        sim_stats['blue94_avg_pop'] = np.mean(tm_state_evolution[9][t1:]) * self.tag['E9E4']
+        sim_stats['blue95_avg_pop'] = np.mean(tm_state_evolution[9][t1:]) * self.tag['E9E5']
+
+        sim_stats['blue10_3_avg_pop'] = np.mean(tm_state_evolution[10][t1:]) * self.tag['E10E3']
         sim_stats['blue10_4_avg_pop'] = np.mean(tm_state_evolution[10][t1:]) * self.tag['E10E4']
         sim_stats['blue10_5_avg_pop'] = np.mean(tm_state_evolution[10][t1:]) * self.tag['E10E5']
 
+        sim_stats['blue11_4_avg_pop'] = np.mean(tm_state_evolution[11][t1:]) * self.tag['E11E4']
+        sim_stats['blue11_5_avg_pop'] = np.mean(tm_state_evolution[11][t1:]) * self.tag['E11E5']
+        
+        sim_stats['blue_avg_pop'] = sim_stats['blue60_avg_pop'] + sim_stats['blue71_avg_pop'] + sim_stats['blue72_avg_pop'] + sim_stats['blue83_avg_pop'] + sim_stats['blue84_avg_pop'] + sim_stats['blue85_avg_pop'] + sim_stats['blue93_avg_pop'] + sim_stats['blue94_avg_pop'] + sim_stats['blue95_avg_pop'] + sim_stats['blue10_3_avg_pop']+ sim_stats['blue10_4_avg_pop'] + sim_stats['blue10_5_avg_pop'] + sim_stats['blue11_4_avg_pop'] + sim_stats['blue11_5_avg_pop']
+        
 
         sim_stats['NIR_blue_ratio_pop'] = sim_stats['NIR_avg_pop'] / sim_stats['blue_avg_pop']
         sim_stats['NIR_blue_total_avg_pop'] = sim_stats['NIR_avg_pop'] + sim_stats['blue_avg_pop']

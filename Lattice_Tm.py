@@ -92,14 +92,14 @@ class Lattice():
         yb_1 = len([i for i in self.points if i.type == 'Yb' and i.state == 1])
         yb_0 = len([i for i in self.points if i.type == 'Yb' and i.state == 0])
 
-        tm_0 = len([i for i in self.points if i.type == 'Er' and i.state == 0])
-        tm_1 = len([i for i in self.points if i.type == 'Er' and i.state == 1])
-        tm_2 = len([i for i in self.points if i.type == 'Er' and i.state == 2])
-        tm_3 = len([i for i in self.points if i.type == 'Er' and i.state == 3])
-        tm_4 = len([i for i in self.points if i.type == 'Er' and i.state == 4])
-        tm_5 = len([i for i in self.points if i.type == 'Er' and i.state == 5])
-        tm_6 = len([i for i in self.points if i.type == 'Er' and i.state == 6])
-        tm_7 = len([i for i in self.points if i.type == 'Er' and i.state == 7])
+        tm_0 = len([i for i in self.points if i.type == 'Tm' and i.state == 0])
+        tm_1 = len([i for i in self.points if i.type == 'Tm' and i.state == 1])
+        tm_2 = len([i for i in self.points if i.type == 'Tm' and i.state == 2])
+        tm_3 = len([i for i in self.points if i.type == 'Tm' and i.state == 3])
+        tm_4 = len([i for i in self.points if i.type == 'Tm' and i.state == 4])
+        tm_5 = len([i for i in self.points if i.type == 'Tm' and i.state == 5])
+        tm_6 = len([i for i in self.points if i.type == 'Tm' and i.state == 6])
+        tm_7 = len([i for i in self.points if i.type == 'Tm' and i.state == 7])
 
         return [yb_0, yb_1], [tm_0, tm_1, tm_2, tm_3, tm_4, tm_5, tm_6, tm_7]
 
