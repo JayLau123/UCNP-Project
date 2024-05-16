@@ -102,8 +102,17 @@ class Lattice():
         er_5 = len([i for i in self.points if i.type == 'Er' and i.state == 5])
         er_6 = len([i for i in self.points if i.type == 'Er' and i.state == 6])
         er_7 = len([i for i in self.points if i.type == 'Er' and i.state == 7])
+        er_8 = len([i for i in self.points if i.type == 'Er' and i.state == 8])
+        er_9 = len([i for i in self.points if i.type == 'Er' and i.state == 9])
+        er_10 = len([i for i in self.points if i.type == 'Er' and i.state == 10])
+        er_11 = len([i for i in self.points if i.type == 'Er' and i.state == 11])
+        er_12 = len([i for i in self.points if i.type == 'Er' and i.state == 12])
+        er_13 = len([i for i in self.points if i.type == 'Er' and i.state == 13])
+        er_14 = len([i for i in self.points if i.type == 'Er' and i.state == 14])
+        er_15 = len([i for i in self.points if i.type == 'Er' and i.state == 15])
 
-        return [yb_0, yb_1], [er_0, er_1, er_2, er_3, er_4, er_5, er_6, er_7]
+
+        return [yb_0, yb_1], [er_0, er_1, er_2, er_3, er_4, er_5, er_6, er_7, er_8, er_9, er_10, er_11, er_12, er_13, er_14, er_15]
     
     def deep_copy(self):
         # Create deep copy of lattice so that we can perform experiments with the same initial state
