@@ -1,2 +1,2 @@
 # NP
-Judd-Ofelt theory based, DFT-assisted computational model of NP
+J-O theory based, DFT-assisted computational model of NP
