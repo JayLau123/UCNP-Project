@@ -1,7 +1,7 @@
 # Three highlights in this paper:
 
 - Judd-Ofelt theory based, DFT-assisted numerical calculation of transition intensity of lanthanides in solids.
-- Markov chain Monte Carlo model for many-ion ollective interactions in $\mathrm{NaYF_4}$.
+- Markov chain Monte Carlo model for many-ion collective interactions in $\mathrm{NaYF_4}$.
 - Computational tool box for experimentalists.
 
 Since we have already comprehensively investigated the effects of crystal fields and electromagnetic fields on single $\mathrm{Ln}^{3+}$ in crystal $\mathrm{NaYF_4}$, now we will treat the spectroscopic properties of single particle emission spectrum as collective phenomena, induced by cooperactive actions and exchange interactions of many lanthanides in solid. 
