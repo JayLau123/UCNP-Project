@@ -4,7 +4,7 @@
 - Markov chain Monte Carlo model for many-ion collective interactions in $\mathrm{NaYF_4}$.
 - Computational tool box for experimentalists.
 
-Since we have already comprehensively investigated the effects of crystal fields and electromagnetic fields on single $\mathrm{Ln}^{3+}$ in crystal $\mathrm{NaYF_4}$, now we will treat the spectroscopic properties of single particle emission spectrum as collective phenomena, induced by cooperactive actions and exchange interactions of many lanthanides in solid. 
+Since we have already comprehensively investigated the effects of crystal fields and electromagnetic fields on single $\mathrm{Ln}^{3+}$ in crystal $\mathrm{NaYF_4}$, now we will treat the spectroscopic properties of single particle emission spectrum as collective phenomena, induced by cooperactive actions and exchange interactions of many lanthanides in solid. There is no strict distinction between radiative and non-radiative emission. As a result, we calculate the transition rate with Judd-Ofelt theory and the actual distance between ions in Euclidean space, and then convert it to transition probability, which will be further compared with generated random number. Therefore, all transitions are treated equally based on a probabilistic perspective.
 
 
 ## Monte Carlo Simulation
