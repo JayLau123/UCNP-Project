@@ -21,8 +21,10 @@ class SaturationPlot:
 
         ################################################################################## NIR total
 
+
         fig1 = go.Figure()
         colors = np.linspace(0, 1, len(self.data))
+
 
         for i, percentage in enumerate(percentages):
             NIR_values = []
@@ -32,6 +34,7 @@ class SaturationPlot:
                     NIR_values.append(self.data[percentage][power_density]['NIR_avg_pop'])
                 else:
                     NIR_values.append(None)
+                    
 
             # Add traces for each color
             fig1.add_trace(go.Scatter(
@@ -40,9 +43,10 @@ class SaturationPlot:
                 marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
             ))
 
+
         # Update layout
         fig1.update_layout(
-            title='Saturation Curves(NIR30+NIR62+NIR75)',
+            title='Saturation Curves(NIR30+62+74+75+86+96)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -406,13 +410,13 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
         fig2.update_layout(
-            title='Saturation Curves(blue60+blue71+blue83+blue10_4+blue10_5)',
+            title='Saturation Curves(blue60+71+72+83+84+85+93+94+95+10_3+10_4+10_5+11_4+11_5)',
             xaxis=dict(
                 title='Power Densities (W/cm²)',
                 type='log',
@@ -461,8 +465,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -515,8 +519,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -569,8 +573,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -625,8 +629,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -679,8 +683,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -733,8 +737,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -787,8 +791,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -841,8 +845,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -895,8 +899,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -949,8 +953,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -1004,8 +1008,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -1060,8 +1064,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -1114,8 +1118,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
@@ -1168,8 +1172,8 @@ class SaturationPlot:
                 x=power_densities, y=blue_values, mode='lines+markers', name=f'Tm={percentage}, Yb={1-percentage}',
 
                 # keeping blue as the predominant color, update these lines to control the blue and green components
-                line=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})'),
-                marker=dict(color=f'rgb(0, {int((1 - color) * 255)}, {int(color * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, 0, {int(color * 255)})', size=8),
             ))
 
         # Update layout
