@@ -60,8 +60,8 @@ class SaturationPlot:
             # Add traces for each color
             fig1.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -112,8 +112,8 @@ class SaturationPlot:
             # Add traces for each color
             fig2.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -165,8 +165,8 @@ class SaturationPlot:
             # Add traces for each color
             fig3.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -218,8 +218,8 @@ class SaturationPlot:
             # Add traces for each color
             fig4.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -271,8 +271,8 @@ class SaturationPlot:
             # Add traces for each color
             fig5.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -325,8 +325,8 @@ class SaturationPlot:
             # Add traces for each color
             fig6.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -378,8 +378,8 @@ class SaturationPlot:
             # Add traces for each color
             fig7.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -432,8 +432,8 @@ class SaturationPlot:
             # Add traces for each color
             fig8.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -485,8 +485,8 @@ class SaturationPlot:
             # Add traces for each color
             fig9.add_trace(go.Scatter(
                 x=power_densities, y=green_values, mode='lines+markers', name=f'Green {percentage}',
-                line=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb(0, {int(color * 255)}, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)'),
+                marker=dict(color=f'rgb({int((1 - color) * 255)}, {int(color * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -539,8 +539,8 @@ class SaturationPlot:
             # Add traces for each color
             fig10.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -591,8 +591,8 @@ class SaturationPlot:
             # Add traces for each color
             fig11.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -642,8 +642,8 @@ class SaturationPlot:
             # Add traces for each color
             fig12.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -693,8 +693,8 @@ class SaturationPlot:
             # Add traces for each color
             fig13.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -744,8 +744,8 @@ class SaturationPlot:
             # Add traces for each color
             fig14.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -796,8 +796,8 @@ class SaturationPlot:
             # Add traces for each color
             fig15.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -847,8 +847,8 @@ class SaturationPlot:
             # Add traces for each color
             fig16.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -898,8 +898,8 @@ class SaturationPlot:
             # Add traces for each color
             fig17.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -949,8 +949,8 @@ class SaturationPlot:
             # Add traces for each color
             fig18.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -1000,8 +1000,8 @@ class SaturationPlot:
             # Add traces for each color
             fig19.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -1052,8 +1052,8 @@ class SaturationPlot:
             # Add traces for each color
             fig20.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -1103,8 +1103,8 @@ class SaturationPlot:
             # Add traces for each color
             fig21.add_trace(go.Scatter(
                 x=power_densities, y=red_values, mode='lines+markers', name=f'Red {percentage}',
-                line=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})'),
-                marker=dict(color=f'rgb({int(color * 255)}, 0, {int((1 - color) * 255)})', size=8),
+                line=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)'),
+                marker=dict(color=f'rgb({int(color * 255)}, {int((1 - color) * 255)}, 0)', size=8),
             ))
 
         # Update layout
@@ -1134,8 +1134,6 @@ class SaturationPlot:
         )
 
         fig21.show()
-
-
 
 
 
