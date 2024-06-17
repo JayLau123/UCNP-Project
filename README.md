@@ -1,13 +1,18 @@
-# Three highlights in this paper:
+## Some notes:
+
+1. Notebooks are fantastic for iteratively exploring and running experiments quickly. For larger scale projects Python scripts more reproducible and easier to run. We will combi.ne notebooks and Python scripts together
+
+## Three highlights in this paper:
 
 - Judd-Ofelt theory based, DFT-assisted numerical calculation of transition intensity of lanthanides in solids.
 - Markov chain Monte Carlo model for many-ion collective interactions in $\mathrm{NaYF_4}$.
+- Neural network model
 - Computational tool box for experimentalists.
 
 Since we have already comprehensively investigated the effects of crystal fields and electromagnetic fields on single $\mathrm{Ln}^{3+}$ in crystal $\mathrm{NaYF_4}$, now we will treat the spectroscopic properties of single particle emission spectrum as collective phenomena, induced by cooperactive actions and exchange interactions of many lanthanides in solid. There is no strict distinction between radiative and non-radiative emission. As a result, we calculate the transition rate with Judd-Ofelt theory and the actual distance between ions in Euclidean space, and then convert it to transition probability, which will be further compared with generated random number. Therefore, all transitions are treated equally based on a probabilistic perspective.
 
 
-## Monte Carlo Simulation
+### Monte Carlo Simulation
 
 Recall that this research endeavors to advance the understanding of energy transfer dynamics within UCNPs by developing and refining a Monte-Carlo model. Grounded in an extensive theoretical framework and calculated transition rates so far, the various mechanisms involved in energy redistribution are examined, including resonant energy transfer process(RET), phonon-assisted energy transfer process(PET)(up-conversion, cross-relaxation), electric dipole (ED) and magnetic dipole (MD) radiative emissions, and multi-phonon relaxation. 
 
@@ -45,3 +50,4 @@ The simulation timescale operates over $T=1~ \mathrm{s}$, segmented into nanosec
 
 A pivotal aspect of the simulation involves tracking and quantifying transition events over time: $10^6$ steps with $\Delta t= 1~\mathrm{us}, T=1~ \mathrm{s}$, and across specific wavelength bands, i.e. Blue ($\lambda \leq 510 ~\mathrm{nm}$), Green ($510 \leq \lambda \leq 705 ~\mathrm{nm}$), and near-infrared (NIR) ($705 \leq \lambda \leq 850 ~\mathrm{nm}$). The objective is to calculate the emission intensity in photons per second ($\mathrm{pps}$), which serves as a standard for model validation against experimental observations.
 
+### Neural network model
