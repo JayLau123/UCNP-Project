@@ -2,7 +2,6 @@
 print('Successfully import:') 
 print()
 print('ED_cal(energy_dict, omega, RME_square, n)') 
-print('ED_Yb(energy_dict, n)')
 print('MD_cal(energy_dict, n)') 
 print('MPR_cal(energy_dict, W0, alpha, phonon)')
 print()
@@ -48,37 +47,6 @@ def ED_cal(energy_dict, omega, RME_square, n):
 
 
 
-def ED_Yb(energy_dict, n):
-
-    # contain omega and RME_square
-    S_Yb = 2*10**-20
-
-    keys = list(energy_dict.keys())
-    energy_gaps = {}
-
-    for i in range(len(keys)):
-        for j in range(i+1, len(keys)):
-
-            
-            start_level = keys[j] # 2F(5/2)
-            end_level = keys[i] # 2F(7/2)
-
-            start_E = start_level[0 : start_level.find('(')] # E1
-            end_E = end_level[0 : end_level.find('(')] # E0
-            key =  start_E + end_E # E1E0
-            energy_gaps[key] = energy_dict[start_level] - energy_dict[end_level]
-
-    n_term = (n*(n**2+2)**2)/9
-
-    J = 6 # 2F(5/2)
-
-    ED_constant = (64*3.14**4*(4.8*10**-10)**2)/(3*6.6261*10**-27)
-
-    dic_ED={}
-
-    dic_ED[key] =  ED_constant * ( energy_gaps[key]**3 / (2*J+1) ) * n_term * S_Yb
-
-    return dic_ED
 
 
 
@@ -134,7 +102,7 @@ def MD_cal(energy_dict, n):
         delta_v = start_value - end_value
 
         # J to J+1
-        if end_symbol[2] > start_symbol[2]: 
+        if int(end_symbol[2]) > int(start_symbol[2]): 
 
             # print('J to J+1')
 
@@ -147,7 +115,7 @@ def MD_cal(energy_dict, n):
             dic_MD[key] = value
 
         # J+1 to J
-        elif end_symbol[2] < start_symbol[2]:
+        elif int(end_symbol[2]) < int(start_symbol[2]):
 
             # print('J+1 to J')
 
