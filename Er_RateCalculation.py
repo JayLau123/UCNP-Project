@@ -163,7 +163,7 @@ def MD_cal(energy_dict, n):
 
 import numpy as np
 
-def MPR_cal(energy_dict, W0, alpha, phonon):
+def MPR_cal(energy_dict, W0, alpha, E_phonon):
 
     # # zero-phonon relaxation rate
     # W0=2*10**7
@@ -191,7 +191,7 @@ def MPR_cal(energy_dict, W0, alpha, phonon):
 
     for key in energy_gaps:
 
-        mpr = W0 * np.exp(-alpha * (energy_gaps[key] - 2*phonon))
+        mpr = W0 * np.exp(-alpha * (energy_gaps[key] - 2*E_phonon))
         dic_MPR[key] = mpr
 
     return dic_MPR

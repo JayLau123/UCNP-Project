@@ -1,7 +1,7 @@
 print('Successfully import:')
 print()
-print('class Er_EnergyLevelDiagram(ion_name, energy_levels)')
-print('class Er_EnergyLevelDiagramArrow(ion_name, energy_levels, ED_transitions, MD_transitions)')
+print('class Er_EnergyLevelDiagram(self, ion_name, energy_dict)')
+print('class Er_EnergyLevelDiagramArrow(self, ion_name, energy_dict, ED_transitions, MD_transitions)')
 print()
 
 
@@ -10,14 +10,14 @@ import plotly.graph_objects as go
 
 class Er_EnergyLevelDiagram:
 
-    def __init__(self, ion_name, energy_levels):
+    def __init__(self, ion_name, energy_dict):
         """
         Initialize the EnergyLevelDiagram with a dictionary of energy levels.
         
         :param energy_levels: A dictionary with levels as keys and energy values as values.
         """
         self.ion_name = ion_name
-        self.energy_levels = energy_levels
+        self.energy_levels = energy_dict
 
     def plot_diagram(self):
         """
@@ -52,8 +52,8 @@ class Er_EnergyLevelDiagram:
                 tickfont=dict(size=13),
                 title_font=dict(size=20)
             ),
-            width=1100,  # Set the width of the figure
-            height=1100,  # Set the height of the figure
+            width=1500,  # Set the width of the figure
+            height=2500,  # Set the height of the figure
             plot_bgcolor='white',  # Set the background color to white
             xaxis_showgrid=False,  # Remove the x-axis grid
             yaxis_showgrid=False,  # Remove the y-axis grid
@@ -72,7 +72,7 @@ class Er_EnergyLevelDiagram:
 
 class Er_EnergyLevelDiagramArrow:
 
-    def __init__(self, ion_name, energy_levels, ED_transitions, MD_transitions):
+    def __init__(self, ion_name, energy_dict, ED_transitions, MD_transitions):
         """
         Initialize the EnergyLevelDiagramArrow with energy levels and transitions and
         automatically generate and display the energy level diagram.
@@ -81,22 +81,22 @@ class Er_EnergyLevelDiagramArrow:
         :param transitions: A nested dictionary with colors as keys and dictionaries of transitions and wavelengths as values.
         """
         self.ion_name = ion_name
-        self.energy_levels = energy_levels
+        self.energy_levels = energy_dict
         self.transitions_MD = MD_transitions
         self.transitions = ED_transitions
-        self.energy_levels_arrow = {key: value + 350 for key, value in self.energy_levels.items()}
+        self.energy_levels_arrow = {key: value + 280 for key, value in self.energy_levels.items()}
         self.fig = go.Figure()
 
         # mpr start point
-        self.x_start_2 = 0.05
+        self.x_start_2 = 0.005
 
         # MD start point
-        self.x_start_3 = 0.1
-        self.x_step_3 = 0.03
+        self.x_start_3 = 0.01
+        self.x_step_3 = 0.005
 
         # ED start point
-        self.x_start = 0.4
-        self.x_step = 0.03
+        self.x_start = 0.0125
+        self.x_step = 0.005
         
         
         self.add_energy_levels()
@@ -127,7 +127,7 @@ class Er_EnergyLevelDiagramArrow:
         
         for i, key in enumerate(self.energy_levels):
 
-            if i<15:
+            if i<len(self.energy_levels)-1:
 
                 start_level = key
                 end_level = list(self.energy_levels.keys())[i+1]
@@ -266,8 +266,8 @@ class Er_EnergyLevelDiagramArrow:
                 tickfont=dict(size=13),
                 title_font=dict(size=20)
             ),
-            width=1500,
-            height=1100,
+            width=6000,
+            height=2500,
             plot_bgcolor='white',
             xaxis_showgrid=False,
             yaxis_showgrid=False,
