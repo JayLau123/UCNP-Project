@@ -5,6 +5,12 @@ print('Tm_RME')
 print('Tm_omega')
 print()
 
+# Yb inf
+Yb_energy = {'S0':0, 'S1': 10246}
+Yb_g={'S1':6}
+
+
+# Tm inf
 
 # Intensity parameter
 Tm_omega={'2':2.04*10**-20, '4':2.01*10**-20, '6':1.44*10**-20}
