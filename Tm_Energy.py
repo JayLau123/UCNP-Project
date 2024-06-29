@@ -57,8 +57,9 @@ def find_ED_transition(energy_dict):
         # Print details about the filtered transitions
         print(f"\nFor {color_name} ({lower_bound} nm to {upper_bound} nm):")
         print(f"Number of selected transitions: {len(filtered_transitions)}")
-        for transition, wavelength in filtered_transitions.items():
-            print(f"{transition}: {wavelength} nm")
+
+        # for transition, wavelength in filtered_transitions.items():
+        #     print(f"{transition}: {wavelength} nm")
 
     return color_transitions
 

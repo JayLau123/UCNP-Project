@@ -1,14 +1,14 @@
 print('Successfully import:')
 print()
-print('class Tm_EnergyLevelDiagram(ion_name, energy_levels)')
-print('class Tm_EnergyLevelDiagramArrow(ion_name, energy_levels, ED_transitions, MD_transitions)')
+print('class EnergyLevelDiagram(ion_name, energy_levels)')
+print('class EnergyLevelDiagramArrow(ion_name, energy_levels, ED_transitions, MD_transitions)')
 print()
 
 
 
 import plotly.graph_objects as go
 
-class Tm_EnergyLevelDiagram:
+class EnergyLevelDiagram:
 
     def __init__(self, ion_name, energy_levels):
         """
@@ -70,7 +70,7 @@ class Tm_EnergyLevelDiagram:
 
 
 
-class Tm_EnergyLevelDiagramArrow:
+class EnergyLevelDiagramArrow:
 
     def __init__(self, ion_name, energy_levels, ED_transitions, MD_transitions):
         """

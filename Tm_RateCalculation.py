@@ -48,8 +48,6 @@ def ED_cal(energy_dict, omega, RME_square, n):
 
 
 
-
-
 def MD_cal(energy_dict, n):
 
     # MD selection rule, from Xueyuan Chen
@@ -102,7 +100,7 @@ def MD_cal(energy_dict, n):
         delta_v = start_value - end_value
 
         # J to J+1
-        if int(end_symbol[2]) > int(start_symbol[2]): 
+        if end_symbol[2] > start_symbol[2]: 
 
             # print('J to J+1')
 
@@ -115,7 +113,7 @@ def MD_cal(energy_dict, n):
             dic_MD[key] = value
 
         # J+1 to J
-        elif int(end_symbol[2]) < int(start_symbol[2]):
+        elif end_symbol[2] < start_symbol[2]:
 
             # print('J+1 to J')
 
