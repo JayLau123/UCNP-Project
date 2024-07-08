@@ -1,6 +1,6 @@
 # Some notes:
 
-1. Notebooks are fantastic for iteratively exploring and running experiments quickly. For larger scale projects Python scripts more reproducible and easier to run. We will combi.ne notebooks and Python scripts together
+1. Notebooks are fantastic for iteratively exploring and running experiments quickly. For larger scale projects Python scripts more reproducible and easier to run. We will combine notebooks and Python scripts together
 2. I usually start machine learning projects in Jupyter/Google Colab notebooks for quick experimentation and visualization, and then when I've got something working, I move the most useful pieces of code to Python scripts
 3. There are many possible workflows for writing machine learning code. Some prefer to start with scripts, others (like me) prefer to start with notebooks and go to scripts later on.
 
