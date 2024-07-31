@@ -54,3 +54,64 @@ The simulation timescale operates over $T=1~ \mathrm{s}$, segmented into nanosec
 A pivotal aspect of the simulation involves tracking and quantifying transition events over time: $10^6$ steps with $\Delta t= 1~\mathrm{us}, T=1~ \mathrm{s}$, and across specific wavelength bands, i.e. Blue ($\lambda \leq 510 ~\mathrm{nm}$), Green ($510 \leq \lambda \leq 705 ~\mathrm{nm}$), and near-infrared (NIR) ($705 \leq \lambda \leq 850 ~\mathrm{nm}$). The objective is to calculate the emission intensity in photons per second ($\mathrm{pps}$), which serves as a standard for model validation against experimental observations.
 
 
+# Brief Code Interpretation
+
+This code is a part of a Monte Carlo simulation for modeling energy transfer processes in a lanthanide-doped upconversion nanoparticle (UCNP), specifically focusing on $Tm^{3+}$ ions. Here are the  key components and functionality:
+
+### Key Components
+
+1. **Imports and Dependencies**
+   - The code imports various modules and functions (e.g., `EnergyTransfer_Tm`, `Lattice_Tm`, `Point_Tm`) that are likely used for managing the crystal lattice, ions, energy levels, and rate calculations.
+
+2. **Simulator Class**
+   - The `Simulator` class is the main component that manages the simulation.
+
+#### **Initialization (`__init__` method)**
+   - **Parameters:**
+     - `lattice`: The crystal lattice, containing ions and their initial states.
+     - `tag`: A dictionary that seems to hold simulation parameters and constants (e.g., transition probabilities, energy levels).
+     - `dt`: The time step for the simulation.
+     - `excite_tm`: A boolean to determine whether Tm ions are excited.
+
+   - **Attributes:**
+     - `self.lattice`: A deep copy of the provided lattice.
+     - `self.t`: Initializes the simulation time.
+     - `self.dt`: The time step size.
+     - `self.cross_relaxation`, `self.up_conversion`: Instances or methods handling these specific processes.
+
+#### **Step Method (`step`)**
+   - This method simulates a single or multiple steps in the simulation.
+
+   - **Emission Tracking:**
+     - If `emission` is True, it tracks the number of emissions at specific wavelengths (NIR and blue emissions).
+
+   - **Simulation Loop:**
+     - For each time step, the simulation:
+       1. Shuffles the excited ions (`self.lattice.excited`).
+       2. Iterates through each excited ion and calculates energy transfer (ET) rates with neighboring ions, or potential decay pathways.
+       3. Decides whether a reaction occurs using random numbers and the calculated probabilities:
+          - **No Reaction**: The ion stays in its current state.
+          - **Decay**: The ion transitions to a lower energy state.
+          - **Energy Transfer (ET)**: Involves transferring energy to a neighboring ion, potentially leading to state changes.
+
+   - **State Update:**
+     - After processing all ions, the states of the ions (excited and ground state Yb ions) are updated.
+
+   - **Emission Data:**
+     - If emission tracking is enabled, data on the specific emissions are recorded for later analysis.
+
+#### **Simulate Method (`simulate`)**
+   - Runs the simulation over a specified number of steps (`t1` to `t2`).
+   - **Tracking State Evolution:**
+     - Tracks the state distribution of Yb and Tm ions over time.
+     - Collects and returns detailed statistics on emissions, state distributions, and energy transfer processes.
+
+### Purpose and Usage
+The `Simulator` class provides a framework for simulating the dynamics of energy transfer and emissions in a UCNP system. The model considers:
+- Energy transfer between ions (Yb³⁺ and Tm³⁺).
+- Decay processes of excited ions.
+- Upconversion processes where lower energy photons are absorbed, leading to the emission of higher energy photons.
+
+The simulation can be used to study the upconversion processes, the distribution of ion states over time, and the effect of different parameters on the emission spectrum.
+
+
