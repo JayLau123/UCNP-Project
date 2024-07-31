@@ -61,7 +61,7 @@ This code is a part of a Monte Carlo simulation for modeling energy transfer pro
 ### Key Components
 
 1. **Imports and Dependencies**
-   - The code imports various modules and functions (e.g., `EnergyTransfer_Tm`, `Lattice_Tm`, `Point_Tm`) that are likely used for managing the crystal lattice, ions, energy levels, and rate calculations.
+   - The code imports various modules and functions (e.g., `EnergyTransfer_Tm`, `Lattice_Tm`, `Point_Tm`) that are used for managing the crystal lattice, ions, energy levels, and rate calculations.
 
 2. **Simulator Class**
    - The `Simulator` class is the main component that manages the simulation.
