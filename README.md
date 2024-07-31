@@ -69,7 +69,7 @@ This code is a part of a Monte Carlo simulation for modeling energy transfer pro
 #### **Initialization (`__init__` method)**
    - **Parameters:**
      - `lattice`: The crystal lattice, containing ions and their initial states.
-     - `tag`: A dictionary that seems to hold simulation parameters and constants (e.g., transition probabilities, energy levels).
+     - `tag`: A dictionary that hold simulation parameters and constants (e.g., transition probabilities, energy levels).
      - `dt`: The time step for the simulation.
      - `excite_tm`: A boolean to determine whether Tm ions are excited.
 
