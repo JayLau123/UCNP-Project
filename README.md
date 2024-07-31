@@ -56,7 +56,7 @@ A pivotal aspect of the simulation involves tracking and quantifying transition 
 
 # Brief Code Interpretation
 
-This code is a part of a Monte Carlo simulation for modeling energy transfer processes in a lanthanide-doped upconversion nanoparticle (UCNP), specifically focusing on $Tm^{3+}$ ions. Here are the  key components and functionality:
+This code is the main part of a Monte Carlo simulation for modeling energy transfer processes in a lanthanide-doped upconversion nanoparticle (UCNP), specifically focusing on $\mathrm{Tm^{3+}}$ ions. Here are the  key components and functionality:
 
 ### Key Components
 
