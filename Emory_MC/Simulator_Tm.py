@@ -91,7 +91,7 @@ class Simulator():
                 transition_to_point[f'0order_{p}_1'] = (p, 1)
             elif p.type == 'Tm' and p.state == 7:
                 transition_table[f'0order_{p}_11'] = self.tag['laser_tm']
-                transition_to_point[f'0order_{p}_1'] = (p, 11)
+                transition_to_point[f'0order_{p}_11'] = (p, 11)
             
         with tqdm(total=100) as pbar:
             while (time_passed < steps):
@@ -251,7 +251,7 @@ class Simulator():
                         transition_to_point[f'0order_{p}_1'] = (p, 1)
                     elif p.type == 'Tm' and p.state == 7:
                         transition_table[f'0order_{p}_11'] = self.tag['laser_tm']
-                        transition_to_point[f'0order_{p}_1'] = (p, 11)
+                        transition_to_point[f'0order_{p}_11'] = (p, 11)
 
                 else: # ET
                     p_donor, p_acceptor = transition_to_point[selected_transition]
@@ -338,7 +338,7 @@ class Simulator():
                         transition_to_point[f'0order_{p_donor}_1'] = (p_donor, 1)
                     elif p_donor.type == 'Tm' and p_donor.state == 7:
                         transition_table[f'0order_{p_donor}_11'] = self.tag['laser_tm']
-                        transition_to_point[f'0order_{p_donor}_1'] = (p_donor, 11)
+                        transition_to_point[f'0order_{p_donor}_11'] = (p_donor, 11)
 
                     decay = p_acceptor.get_decay_rates(self.tag)
                     for k,v in enumerate(decay):
@@ -362,7 +362,7 @@ class Simulator():
                         transition_to_point[f'0order_{p_acceptor}_1'] = (p_acceptor, 1)
                     elif p_acceptor.type == 'Tm' and p_acceptor.state == 7:
                         transition_table[f'0order_{p_acceptor}_11'] = self.tag['laser_tm']
-                        transition_to_point[f'0order_{p_acceptor}_1'] = (p_acceptor, 11)
+                        transition_to_point[f'0order_{p_acceptor}_11'] = (p_acceptor, 11)
                     
                 time_passed += -np.log(np.random.rand())/rates.sum()
                 percent_complete = (time_passed / steps) * 100
@@ -421,8 +421,8 @@ class Simulator():
 
         ## At 2500 steps, reach steady state
 
-        self.step(t1, emission=True)
-        sim_stats = self.step(t2-t1)
+        self.step(t1)
+        sim_stats = self.step(t2-t1, emission=True)
 
         return sim_stats
     
