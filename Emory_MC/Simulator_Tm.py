@@ -13,118 +13,116 @@ class Simulator():
         self.tag = tag
         self.cross_relaxation = cross_relaxation()
         self.up_conversion = up_conversion()  
+        self.initialize_transitions()
 
     def step(self, steps=0.003):
-        transition_table, transition_to_point = self.initialize_transitions()
         time_passed = 0
-        
+
         with tqdm(total=100) as pbar:
             while time_passed < steps:
-                selected_transition = self.select_transition(transition_table)
-                self.process_transition(selected_transition, transition_table, transition_to_point)  
-                time_passed += -np.log(np.random.rand())/sum(transition_table.values())
-
+                selected_transition = self.select_transition()
+                self.process_transition(selected_transition)  
+                time_passed += -np.log(np.random.rand())/sum(self.transition_table.values())
+                
                 percent_complete = time_passed/steps * 100
                 pbar.n = percent_complete
                 pbar.last_print_n = percent_complete
                 pbar.update(0)
-
     
     def initialize_transitions(self):
-        transition_table = {}
-        transition_to_point = {}
+        self.transition_table = {}
+        self.transition_to_point = {}
         for p in self.lattice.points:
-            self.add_decay_transitions(p, transition_table, transition_to_point)
-            self.add_et_transitions(p, transition_table, transition_to_point)
-            self.add_laser_transitions(p, transition_table, transition_to_point)
-        return transition_table, transition_to_point
+            self.add_decay_transitions(p)
+            self.add_et_transitions(p)
+            self.add_laser_transitions(p) 
     
-    def add_decay_transitions(self, p, transition_table, transition_to_point):
+    def add_decay_transitions(self, p):
         decay = p.get_decay_rates(self.tag)
         for k, v in enumerate(decay):
-            transition_table[f'1order_{p}_{k}'] = v
-            transition_to_point[f'1order_{p}_{k}'] = (p, k)
+            self.transition_table[f'1order_{p}_{k}'] = v
+            self.transition_to_point[f'1order_{p}_{k}'] = (p, k)
     
-    def add_et_transitions(self, p, transition_table, transition_to_point):
+    def add_et_transitions(self, p):
         for p_nei, distance in self.lattice.neighbors[p]:
             r = p.react(p_nei, self.cross_relaxation, self.up_conversion, self.tag['c0'], distance)
             if r is not None:
-                transition_table[f'2order_{p}_{p_nei}'] = r
-                transition_to_point[f'2order_{p}_{p_nei}'] = (p, p_nei)
+                self.transition_table[f'2order_{p}_{p_nei}'] = r
+                self.transition_to_point[f'2order_{p}_{p_nei}'] = (p, p_nei)
             r = p_nei.react(p, self.cross_relaxation, self.up_conversion, self.tag['c0'], distance)
             if r is not None:
-                transition_table[f'2order_{p_nei}_{p}'] = r
-                transition_to_point[f'2order_{p_nei}_{p}'] = (p_nei, p)
+                self.transition_table[f'2order_{p_nei}_{p}'] = r
+                self.transition_to_point[f'2order_{p_nei}_{p}'] = (p_nei, p)
         
-    def add_laser_transitions(self, p, transition_table, transition_to_point):
+    def add_laser_transitions(self, p):
         if p.type == 'Yb' and p.state == 0:
-            transition_table[f'0order_{p}_1'] = self.tag['laser']
-            transition_to_point[f'0order_{p}_1'] = (p, 1)
+            self.transition_table[f'0order_{p}_1'] = self.tag['laser']
+            self.transition_to_point[f'0order_{p}_1'] = (p, 1)
         elif p.type == 'Tm' and p.state == 7:
-            transition_table[f'0order_{p}_11'] = self.tag['laser_tm']
-            transition_to_point[f'0order_{p}_11'] = (p, 11)
+            self.transition_table[f'0order_{p}_11'] = self.tag['laser_tm']
+            self.transition_to_point[f'0order_{p}_11'] = (p, 11)
 
-    def select_transition(self, transition_table):
-        transitions = np.array(list(transition_table.keys()))
-        rates = np.array(list(transition_table.values()))
+    def select_transition(self):
+        transitions = np.array(list(self.transition_table.keys()))
+        rates = np.array(list(self.transition_table.values()))
         probabilities = rates / rates.sum()
         return np.random.choice(transitions, p=probabilities)
     
-    def process_transition(self, selected_transition, transition_table, transition_to_point):
+    def process_transition(self, selected_transition):
         if selected_transition.startswith('0'):
-            self.process_laser_excitation(selected_transition, transition_table, transition_to_point)
+            self.process_laser_excitation(selected_transition)
         elif selected_transition.startswith('1'):
-            self.process_decay(selected_transition, transition_table, transition_to_point)
+            self.process_decay(selected_transition)
         else:
-            self.process_et(selected_transition, transition_table, transition_to_point)
+            self.process_et(selected_transition)
     
-    def process_laser_excitation(self, selected_transition, transition_table, transition_to_point):
-        p, new_state = transition_to_point[selected_transition]
-        self.remove_old_transitions(p, transition_table, transition_to_point)
+    def process_laser_excitation(self, selected_transition):
+        p, new_state = self.transition_to_point[selected_transition]
+        self.remove_old_transitions(p)
         p.state = new_state
-        self.update_after_transition(p, transition_table, transition_to_point)
+        self.update_after_transition(p)
     
-    def process_decay(self, selected_transition, transition_table, transition_to_point):
-        p, new_state = transition_to_point[selected_transition]
-        self.remove_old_transitions(p, transition_table, transition_to_point)
+    def process_decay(self, selected_transition):
+        p, new_state = self.transition_to_point[selected_transition]
+        self.remove_old_transitions(p)
         p.state = new_state
-        self.update_after_transition(p, transition_table, transition_to_point)
+        self.update_after_transition(p)
     
-    def process_et(self, selected_transition, transition_table, transition_to_point):
-        p_donor, p_acceptor = transition_to_point[selected_transition]
-        self.remove_old_transitions(p_donor, transition_table, transition_to_point)
-        self.remove_old_transitions(p_acceptor, transition_table, transition_to_point)
-        self.handle_energy_transfer(p_donor, p_acceptor, transition_table, transition_to_point)
-        self.update_after_transition(p_donor, transition_table, transition_to_point)
-        self.update_after_transition(p_acceptor, transition_table, transition_to_point)
+    def process_et(self, selected_transition):
+        p_donor, p_acceptor = self.transition_to_point[selected_transition]
+        self.remove_old_transitions(p_donor)
+        self.remove_old_transitions(p_acceptor)
+        self.handle_energy_transfer(p_donor, p_acceptor)
+        self.update_after_transition(p_donor)
+        self.update_after_transition(p_acceptor)
         
     
-    def update_after_transition(self, p, transition_table, transition_to_point):
-        self.add_decay_transitions(p, transition_table, transition_to_point)
-        self.add_et_transitions(p, transition_table, transition_to_point)
-        self.add_laser_transitions(p, transition_table, transition_to_point)
+    def update_after_transition(self, p):
+        self.add_decay_transitions(p)
+        self.add_et_transitions(p)
+        self.add_laser_transitions(p)
     
-    def remove_old_transitions(self, p, transition_table, transition_to_point):
+    def remove_old_transitions(self, p):
         for possible_new_state in range(p.state):
-            del transition_table[f'1order_{p}_{possible_new_state}']
-            del transition_to_point[f'1order_{p}_{possible_new_state}']
+            del self.transition_table[f'1order_{p}_{possible_new_state}']
+            del self.transition_to_point[f'1order_{p}_{possible_new_state}']
 
         for p_nei, _ in self.lattice.neighbors[p]:
-            if f'2order_{p}_{p_nei}' in transition_table:
-                del transition_table[f'2order_{p}_{p_nei}']
-                del transition_to_point[f'2order_{p}_{p_nei}']
-            if f'2order_{p_nei}_{p}' in transition_table:
-                del transition_table[f'2order_{p_nei}_{p}']
-                del transition_to_point[f'2order_{p_nei}_{p}']
+            if f'2order_{p}_{p_nei}' in self.transition_table:
+                del self.transition_table[f'2order_{p}_{p_nei}']
+                del self.transition_to_point[f'2order_{p}_{p_nei}']
+            if f'2order_{p_nei}_{p}' in self.transition_table:
+                del self.transition_table[f'2order_{p_nei}_{p}']
+                del self.transition_to_point[f'2order_{p_nei}_{p}']
         
         if p.type == 'Yb' and p.state == 0:
-            del transition_table[f'0order_{p}_{1}']
-            del transition_to_point[f'0order_{p}_{1}']
+            del self.transition_table[f'0order_{p}_{1}']
+            del self.transition_to_point[f'0order_{p}_{1}']
         if p.type == 'Tm' and p.state == 7:
-            del transition_table[f'0order_{p}_{11}']
-            del transition_to_point[f'0order_{p}_{11}']
+            del self.transition_table[f'0order_{p}_{11}']
+            del self.transition_to_point[f'0order_{p}_{11}']
 
-    def handle_energy_transfer(self, p_donor, p_acceptor, transition_table, transition_to_point):
+    def handle_energy_transfer(self, p_donor, p_acceptor):
         if p_donor.type == 'Yb' and p_acceptor.type == 'Yb':
             p_donor.state = 0
             p_acceptor.state = 1
