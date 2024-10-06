@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <random>
-#include <map>
+#include <unordered_map>
 #include "Point_Tm.hpp"
 #include "utils.hpp"
 
@@ -27,7 +27,7 @@ private:
     std::vector<Point> y_points;
     std::vector<Point> points;
     int n_points;
-    std::map<Point, std::vector<std::pair<Point, double>>> neighbors;
+    std::unordered_map<Point, std::vector<std::pair<Point, double>>> neighbors;
     std::vector<Point> excited;
     std::vector<Point> ground_yb;
 

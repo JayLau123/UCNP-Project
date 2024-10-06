@@ -38,8 +38,8 @@ Point Point::deep_copy() const {
 }
 
 std::pair<double, std::vector<int>> Point::react(const Point& other, 
-                                                 const std::map<int, CrossRelaxation>& cross_relaxation,
-                                                 const std::map<int, UpConversion>& up_conversion,
+                                                 const std::unordered_map<int, CrossRelaxation>& cross_relaxation,
+                                                 const std::unordered_map<int, UpConversion>& up_conversion,
                                                  double yb_yb, 
                                                  double distance) const {
     if (type == "Yb" && state == 1) {
@@ -57,7 +57,7 @@ std::pair<double, std::vector<int>> Point::react(const Point& other,
     return {0.0, {}};
 }
 
-std::vector<double> Point::get_decay_rates(const std::map<std::string, double>& tag) const {
+std::vector<double> Point::get_decay_rates(const std::unordered_map<std::string, double>& tag) const {
     std::vector<double> ret;
     for (int i = 0; i < state; ++i) {
         ret.push_back(tag.at("E" + std::to_string(state) + "E" + std::to_string(i)));

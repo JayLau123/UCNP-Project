@@ -17,16 +17,15 @@ public:
     double to(const Point& other) const;
     Point deep_copy() const;
     std::pair<double, std::vector<int>> react(const Point& other, 
-                                               const std::map<int, CrossRelaxation>& cross_relaxation,
-                                               const std::map<int, UpConversion>& up_conversion,
+                                               const std::unordered_map<int, CrossRelaxation>& cross_relaxation,
+                                               const std::unordered_map<int, UpConversion>& up_conversion,
                                                double yb_yb, 
                                                double distance) const;
-    std::vector<double> get_decay_rates(const std::map<std::string, double>& tag) const;
+    std::vector<double> get_decay_rates(const std::unordered_map<std::string, double>& tag) const;
     std::string to_string() const;
 
     bool operator==(const Point& other) const;
 
-private:
     std::tuple<double, double, double> p; // Coordinates
     std::string type; // Molecular type
     int state; // State

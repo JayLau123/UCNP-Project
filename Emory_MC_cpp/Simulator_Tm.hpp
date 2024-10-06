@@ -1,38 +1,43 @@
 #ifndef SIMULATOR_HPP
 #define SIMULATOR_HPP
 
+#include <unordered_map>
 #include <vector>
-#include <map>
 #include <string>
 #include <random>
-#include <iostream>
-#include "Lattice.hpp"
-#include "Point.hpp"
+#include <cmath>
+#include "Point_Tm.hpp"
+#include "Lattice_Tm.hpp"
+#include "EnergyTransfer_Tm.hpp"
 
 class Simulator {
 public:
-    Simulator(Lattice lattice, std::map<std::string, double> tag, bool excite_tm = false);
-    void step(double steps = 0.003, bool emission = false);
+    Simulator(Lattice &lattice, const std::unordered_map<std::string, double> &tag);
+    void step(double steps = 0.003);
+    void simulate(double t1, double t2);
 
 private:
+    void initialize_transitions();
+    void add_decay_transitions(Point &p);
+    void add_et_transitions(Point &p);
+    void add_laser_transitions(Point &p);
+    std::string select_transition();
+    void process_transition(const std::string &selected_transition);
+    void process_laser_excitation(const std::string &selected_transition);
+    void process_decay(const std::string &selected_transition);
+    void process_et(const std::string &selected_transition);
+    void update_after_transition(Point &p);
+    void remove_old_transitions(Point &p);
+    void handle_energy_transfer(Point &p_donor, Point &p_acceptor);
+
     Lattice lattice;
     double t;
-    std::map<std::string, double> tag;
-    std::map<std::string, double> cross_relaxation;
-    std::map<std::string, double> up_conversion;
-    bool excite_tm;
-
-    // Emission counters
-    int NIR30s, NIR62s, NIR74s, NIR75s, NIR86s, NIR96s;
-    int blue60s, blue71s, blue72s, blue83s, blue84s, blue85s, blue93s, blue94s, blue95s, blue10_3s, blue10_4s, blue10_5s, blue11_4s, blue11_5s;
-    int yb_upconversions, yb_ybs, yb_excites, tm_decays;
-    std::map<std::string, int> tm_upconversions;
-    std::map<std::string, int> tm_crossrelaxations;
-    int tm_excite_7_11s;
-
-    void initializeEmissionCounters();
-    void updateTransitionTable(std::map<std::string, double>& transition_table, std::map<std::string, std::pair<Point*, int>>& transition_to_point);
-    void handleLaserExcitation(const std::string& selected_transition, std::map<std::string, double>& transition_table, std::map<std::string, std::pair<Point*, int>>& transition_to_point);
-    void handleDecay(const std::string& selected_transition, std::map<std::string, double>& transition_table, std::map<std::string, std::pair<Point*, int>>& transition_to_point);
-    void handleEnergyTransfer(const std::string& selected_transition, std::map<std::string, double>& transition_table, std::map<std::string, std::pair<Point*, int>>& transition_to_point);
+    std::unordered_map<std::string, double> tag;
+    CrossRelaxation cross_relaxation;
+    UpConversion up_conversion;
+    std::unordered_map<std::string, double> transition_table;
+    std::unordered_map<std::string, std::pair<Point, int>> transition_to_point;
+    std::default_random_engine generator;
 };
+
+#endif // SIMULATOR_HPP

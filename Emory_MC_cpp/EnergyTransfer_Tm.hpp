@@ -1,21 +1,13 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef ENERGYTRANSFER_TM_HPP
+#define ENERGYTRANSFER_TM_HPP
 
+#include "Tm_inf.hpp"
+#include "Tm_adjustable_parameter.hpp"
 #include <unordered_map>
 #include <vector>
 #include <string>
 #include <random>
 #include <cmath>
-
-extern std::unordered_map<std::string, double> Tm_RME;
-extern std::unordered_map<std::string, double> Tm_energy;
-extern std::unordered_map<std::string, double> Tm_omega;
-extern double ET_constant;
-extern double threshold;
-extern double beta;
-extern int n_phonon;
-extern double E_phonon;
-extern double s0;
 
 class EnergyTransfer {
 public:
@@ -53,4 +45,4 @@ private:
 std::unordered_map<int, UpConversion> up_conversion();
 std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxation();
 
-#endif // UTILS_HPP
+#endif // ENERGYTRANSFER_TM_HPP

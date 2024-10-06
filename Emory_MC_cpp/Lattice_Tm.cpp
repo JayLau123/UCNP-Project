@@ -1,6 +1,8 @@
 #include "Lattice_Tm.hpp"
 #include <algorithm>
 #include <iostream>
+#include "Point_Tm.hpp"
+#include "utils.hpp"
 
 Lattice::Lattice(double yb_conc, double tm_conc, double d, double r, int seed) 
     : yb_conc(yb_conc), tm_conc(tm_conc), d(d), r(r) {
