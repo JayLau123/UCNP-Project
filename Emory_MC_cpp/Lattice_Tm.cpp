@@ -28,8 +28,16 @@ void Lattice::initialize_points() {
 
     std::vector<Point> y_coords;
     for (const auto& na : na_points) {
-        y_coords.emplace_back(Point({na.p[0] + 1.0 / 3.0, na.p[1] + 1.0 / 3.0, na.p[2] + 1.0 / 2.0}, "Y"));
-        y_coords.emplace_back(Point({na.p[0] - 1.0 / 3.0, na.p[1] - 1.0 / 3.0, na.p[2] + 1.0 / 2.0}, "Y"));
+        y_coords.emplace_back(Point(std::make_tuple(
+            std::get<0>(na.p) + 1.0 / 3.0,
+            std::get<1>(na.p) + 1.0 / 3.0,
+            std::get<2>(na.p) + 1.0 / 2.0
+        ), "Y"));
+        y_coords.emplace_back(Point(std::make_tuple(
+            std::get<0>(na.p) - 1.0 / 3.0,
+            std::get<1>(na.p) - 1.0 / 3.0,
+            std::get<2>(na.p) + 1.0 / 2.0
+        ), "Y"));
     }
 
     na_points = in_diameter(d, na_points);
@@ -115,13 +123,26 @@ Lattice Lattice::deep_copy() {
     Lattice cp(yb_conc, tm_conc, d, r);
     cp.na_points = na_points;
     cp.y_points.reserve(points.size());
+    
     for (const auto& p : points) {
         cp.y_points.push_back(p.deep_copy());
     }
+
     cp.points = std::vector<Point>(cp.y_points.begin(), cp.y_points.end());
     cp.n_points = n_points;
     cp.get_neighbors(cp.r);
-    cp.excited = {p for p in cp.points if p.state != 0};
-    cp.ground_yb = {p for p in cp.points if p.type == "Yb" && p.state == 0};
+
+    cp.excited = {};
+    cp.ground_yb = {};
+    
+    for (const auto& p : cp.points) {
+        if (p.state != 0) {
+            cp.excited.push_back(p);
+        }
+        if (p.type == "Yb" && p.state == 0) {
+            cp.ground_yb.push_back(p);
+        }
+    }
+
     return cp;
 }

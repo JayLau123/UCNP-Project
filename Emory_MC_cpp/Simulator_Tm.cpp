@@ -33,8 +33,8 @@ void Simulator::initialize_transitions() {
 void Simulator::add_decay_transitions(Point &p) {
     std::vector<double> decay = p.get_decay_rates(tag);
     for (size_t k = 0; k < decay.size(); ++k) {
-        transition_table["1order_" + p.getName() + "_" + std::to_string(k)] = decay[k];
-        transition_to_point["1order_" + p.getName() + "_" + std::to_string(k)] = {p, static_cast<int>(k)};
+        transition_table["1order_" + p.to_string() + "_" + std::to_string(k)] = decay[k];
+        transition_to_point["1order_" + p.to_string() + "_" + std::to_string(k)] = {p, static_cast<int>(k)};
     }
 }
 
@@ -42,24 +42,24 @@ void Simulator::add_et_transitions(Point &p) {
     for (const auto &[p_nei, distance] : lattice.neighbors[p]) {
         auto r = p.react(p_nei, cross_relaxation, up_conversion, tag.at("c0"), distance);
         if (r != nullptr) {
-            transition_table["2order_" + p.getName() + "_" + p_nei.getName()] = *r;
-            transition_to_point["2order_" + p.getName() + "_" + p_nei.getName()] = {p, p_nei};
+            transition_table["2order_" + p.to_string() + "_" + p_nei.to_string()] = *r;
+            transition_to_point["2order_" + p.to_string() + "_" + p_nei.to_string()] = {p, p_nei};
         }
         r = p_nei.react(p, cross_relaxation, up_conversion, tag.at("c0"), distance);
         if (r != nullptr) {
-            transition_table["2order_" + p_nei.getName() + "_" + p.getName()] = *r;
-            transition_to_point["2order_" + p_nei.getName() + "_" + p.getName()] = {p_nei, p};
+            transition_table["2order_" + p_nei.to_string() + "_" + p.to_string()] = *r;
+            transition_to_point["2order_" + p_nei.to_string() + "_" + p.to_string()] = {p_nei, p};
         }
     }
 }
 
 void Simulator::add_laser_transitions(Point &p) {
     if (p.type == "Yb" && p.state == 0) {
-        transition_table["0order_" + p.getName() + "_1"] = tag.at("laser");
-        transition_to_point["0order_" + p.getName() + "_1"] = {p, 1};
+        transition_table["0order_" + p.to_string() + "_1"] = tag.at("laser");
+        transition_to_point["0order_" + p.to_string() + "_1"] = {p, 1};
     } else if (p.type == "Tm" && p.state == 7) {
-        transition_table["0order_" + p.getName() + "_11"] = tag.at("laser_tm");
-        transition_to_point["0order_" + p.getName() + "_11"] = {p, 11};
+        transition_table["0order_" + p.to_string() + "_11"] = tag.at("laser_tm");
+        transition_to_point["0order_" + p.to_string() + "_11"] = {p, 11};
     }
 }
 
@@ -120,24 +120,24 @@ void Simulator::update_after_transition(Point &p) {
 
 void Simulator::remove_old_transitions(Point &p) {
     for (int possible_new_state = 0; possible_new_state < p.state; ++possible_new_state) {
-        transition_table.erase("1order_" + p.getName() + "_" + std::to_string(possible_new_state));
-        transition_to_point.erase("1order_" + p.getName() + "_" + std::to_string(possible_new_state));
+        transition_table.erase("1order_" + p.to_string() + "_" + std::to_string(possible_new_state));
+        transition_to_point.erase("1order_" + p.to_string() + "_" + std::to_string(possible_new_state));
     }
 
     for (const auto &[p_nei, _] : lattice.neighbors[p]) {
-        transition_table.erase("2order_" + p.getName() + "_" + p_nei.getName());
-        transition_to_point.erase("2order_" + p.getName() + "_" + p_nei.getName());
-        transition_table.erase("2order_" + p_nei.getName() + "_" + p.getName());
-        transition_to_point.erase("2order_" + p_nei.getName() + "_" + p.getName());
+        transition_table.erase("2order_" + p.to_string() + "_" + p_nei.to_string());
+        transition_to_point.erase("2order_" + p.to_string() + "_" + p_nei.to_string());
+        transition_table.erase("2order_" + p_nei.to_string() + "_" + p.to_string());
+        transition_to_point.erase("2order_" + p_nei.to_string() + "_" + p.to_string());
     }
 
     if (p.type == "Yb" && p.state == 0) {
-        transition_table.erase("0order_" + p.getName() + "_1");
-        transition_to_point.erase("0order_" + p.getName() + "_1");
+        transition_table.erase("0order_" + p.to_string() + "_1");
+        transition_to_point.erase("0order_" + p.to_string() + "_1");
     }
     if (p.type == "Tm" && p.state == 7) {
-        transition_table.erase("0order_" + p.getName() + "_11");
-        transition_to_point.erase("0order_" + p.getName() + "_11");
+        transition_table.erase("0order_" + p.to_string() + "_11");
+        transition_to_point.erase("0order_" + p.to_string() + "_11");
     }
 }
 
@@ -160,5 +160,5 @@ void Simulator::handle_energy_transfer(Point &p_donor, Point &p_acceptor) {
 
 void Simulator::simulate(double t1, double t2) {
     step(t1);
-    double sim_stats = step(t2 - t1);
+    step(t2 - t1);
 }
