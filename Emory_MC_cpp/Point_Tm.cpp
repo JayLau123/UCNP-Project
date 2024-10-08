@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iomanip>
 
+Point::Point() : p{0.0, 0.0, 0.0}, type("Default"), state(0) {}
+
 Point::Point(std::tuple<double, double, double> coor, std::string mol, int state)
     : p(coor), type(mol), state(state) {}
 
@@ -30,8 +32,8 @@ double Point::to(const Point& other) const {
     auto vec = std::make_tuple(std::get<0>(p1) - std::get<0>(p2), 
                                 std::get<1>(p1) - std::get<1>(p2), 
                                 std::get<2>(p1) - std::get<2>(p2));
-    auto evec = to_euclidean(vec);
-    return e_distance(evec);
+    auto evec = utils::to_euclidean(vec);
+    return utils::e_distance(evec);
 }
 
 Point Point::deep_copy() const {
@@ -40,7 +42,7 @@ Point Point::deep_copy() const {
 
 std::pair<double, std::vector<int>> Point::react(const Point& other, 
                                                  const std::unordered_map<int, CrossRelaxation>& cross_relaxation,
-                                                 const std::unordered_map<int, UpConversion>& up_conversion,
+                                                 const std::unordered_map<int, std::unordered_map<int, UpConversion>>& up_conversion,
                                                  double yb_yb, 
                                                  double distance) const {
     if (type == "Yb" && state == 1) {

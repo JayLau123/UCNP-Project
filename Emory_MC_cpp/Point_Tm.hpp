@@ -9,6 +9,7 @@
 
 class Point {
 public:
+    Point();
     Point(std::tuple<double, double, double> coor, std::string mol = "", int state = 0);
 
     size_t hash() const;

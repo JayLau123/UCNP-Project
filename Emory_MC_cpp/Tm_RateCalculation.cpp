@@ -61,7 +61,7 @@ std::unordered_map<std::string, double> MD_cal(const std::unordered_map<std::str
                 std::abs(static_cast<int>(symbol1[2]) - static_cast<int>(symbol2[2])) == 1);
     };
 
-    std::vector<std::pair<std::string, double>> pairs;
+    std::vector<std::pair<std::pair<std::string, double>, std::pair<std::string, double>>> pairs;
     std::vector<std::string> keys;
     
     for (const auto& pair : energy_dict) {
@@ -69,27 +69,30 @@ std::unordered_map<std::string, double> MD_cal(const std::unordered_map<std::str
     }
 
     for (size_t i = 0; i < keys.size(); ++i) {
-        const std::string& key1 = keys[i];
-        double value1 = energy_dict.at(key1);
-        std::string symbol1 = extract_symbol(key1);
+        const auto& key1 = keys[i];
+        const auto& value1 = energy_dict.at(key1);
+        auto symbol1 = extract_symbol(key1);
         
         for (size_t j = i + 1; j < keys.size(); ++j) {
-            const std::string& key2 = keys[j];
-            double value2 = energy_dict.at(key2);
-            std::string symbol2 = extract_symbol(key2);
+            const auto& key2 = keys[j];
+            const auto& value2 = energy_dict.at(key2);
+            auto symbol2 = extract_symbol(key2);
             
             if (compare_symbols(symbol1, symbol2)) {
-                pairs.emplace_back(std::min(std::make_pair(key1, value1), std::make_pair(key2, value2), 
-                    [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; }), 
-                    std::max(std::make_pair(key1, value1), std::make_pair(key2, value2), 
-                    [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; }));
+                std::pair<std::string, double> pair1 = {key1, value1};
+                std::pair<std::string, double> pair2 = {key2, value2};
+                
+                if (value1 > value2) {
+                    pairs.push_back({pair2, pair1});
+                } else {
+                    pairs.push_back({pair1, pair2});
+                }
             }
         }
     }
 
     // Calculate the MD rates
-    const double MD_constant = (4 * (6.626e-27) * (M_PI * M_PI) * (4.8e-10) * (4.8e-10) * (4.8e-10) * (4.8e-10) * (n * n * n)) /
-                               (3 * (9.11e-28) * (9.11e-28) * (3e10) * (3e10));
+    double MD_constant = (4 * (6.626e-27) * pow(3.14, 2) * pow(4.8e-10, 2) * pow(n, 3)) / (3 * pow(9.11e-28, 2) * pow(3e10, 2));
 
     std::unordered_map<char, int> L_QN = { {'S', 0}, {'P', 1}, {'D', 2}, {'F', 3}, {'G', 4}, 
                                   {'H', 5}, {'I', 6}, {'K', 7}, {'L', 8}, {'M', 9}, 
@@ -99,53 +102,37 @@ std::unordered_map<std::string, double> MD_cal(const std::unordered_map<std::str
     std::unordered_map<std::string, double> dic_MD;
 
     for (const auto& pair : pairs) {
-        const std::string& end_level = pair.first; // E0 or E2
-        const std::string& start_level = pair.second; // E2 or E0
+        auto end_level = pair.first.first;
+        auto start_level = pair.second.first;
 
         std::string start_E = start_level.substr(0, start_level.find('(')); // E2
         std::string end_E = end_level.substr(0, end_level.find('(')); // E0
         std::string key = start_E + end_E; // E2E0
         
-        std::string start_symbol = start_level.substr(start_level.find('(') + 1, start_level.length() - start_level.find('(') - 2); // 3H5
-        std::string end_symbol = end_level.substr(end_level.find('(') + 1, end_level.length() - end_level.find('(') - 2); // 3H6
+        std::string start_symbol = extract_symbol(start_level); // 3H5
+        std::string end_symbol = extract_symbol(end_level); // 3H6
 
-        double start_value = pair.second;
-        double end_value = pair.first;
-        double delta_v = start_value - end_value;
-
+        double start_value = pair.second.second, end_value = pair.first.second, delta_v = start_value - end_value;
+        
+        double S = (std::stoi(std::string(1, start_symbol[0])) - 1) / 2.0;
+        int L = L_QN[start_symbol[1]], J = start_symbol[2] - '0';
+        double RME_square, value;
         // J to J+1
         if (end_symbol[2] > start_symbol[2]) {
-            double S = (static_cast<int>(start_symbol[0]) - 1) / 2.0;
-            int L = L_QN[start_symbol[1]];
-            int J = static_cast<int>(start_symbol[2]);
-
-            double RME_square = ((S + L + 1) * (S + L + 1) - (J + 1) * (J + 1)) * 
+            RME_square = ((S + L + 1) * (S + L + 1) - (J + 1) * (J + 1)) * 
                                 ((J + 1) * (J + 1) - (L - S) * (L - S)) / (4 * (J + 1));
-            double value = MD_constant * (delta_v * delta_v * delta_v / (2 * J + 1)) * RME_square;
-            dic_MD[key] = value;
-
+            value = MD_constant * (delta_v * delta_v * delta_v / (2 * J + 1)) * RME_square;
         // J+1 to J
         } else if (end_symbol[2] < start_symbol[2]) {
-            double S = (static_cast<int>(start_symbol[0]) - 1) / 2.0;
-            int L = L_QN[start_symbol[1]];
-            int J = static_cast<int>(start_symbol[2]);
-
-            double RME_square = ((S + L + 1) * (S + L + 1) - J * J) * 
+            RME_square = ((S + L + 1) * (S + L + 1) - J * J) * 
                                 (J * J - (L - S) * (L - S)) / (4 * J);
-            double value = MD_constant * (delta_v * delta_v * delta_v / (2 * J + 1)) * RME_square;
-            dic_MD[key] = value;
-
+            value = MD_constant * (delta_v * delta_v * delta_v / (2 * J + 1)) * RME_square;
         // J to J
         } else {
-            double S = (static_cast<int>(start_symbol[0]) - 1) / 2.0;
-            int L = L_QN[start_symbol[1]];
-            int J = static_cast<int>(start_symbol[2]);
-
-            double RME_square = (2 * J + 1) / (4 * J * (J + 1));
-            double value = MD_constant * (delta_v * delta_v * delta_v / (2 * J + 1)) * RME_square;
-
-            dic_MD[key] = value;
+            RME_square = (2 * J + 1) / (4 * J * (J + 1));
+            value = MD_constant * (delta_v * delta_v * delta_v / (2 * J + 1)) * RME_square;
         }
+        dic_MD[key] = value;
     }
 
     return dic_MD;

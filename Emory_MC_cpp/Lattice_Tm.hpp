@@ -9,8 +9,10 @@
 
 class Lattice {
 public:
-    Lattice(double yb_conc, double tm_conc, double d, double r, int seed = 0);
+    std::vector<Point> points;
+    std::unordered_map<Point, std::vector<std::pair<Point, double>>> neighbors;
     
+    Lattice(double yb_conc, double tm_conc, double d, double r, int seed = 0);
     void get_neighbors(double r);
     std::vector<Point> in_diameter(double d, const std::vector<Point>& points);
     std::pair<std::vector<int>, std::vector<int>> collect_stats();
@@ -25,9 +27,7 @@ private:
     double r;
     std::vector<Point> na_points;
     std::vector<Point> y_points;
-    std::vector<Point> points;
     int n_points;
-    std::unordered_map<Point, std::vector<std::pair<Point, double>>> neighbors;
     std::vector<Point> excited;
     std::vector<Point> ground_yb;
 

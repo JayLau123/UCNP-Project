@@ -34,7 +34,7 @@ void Simulator::add_decay_transitions(Point &p) {
     std::vector<double> decay = p.get_decay_rates(tag);
     for (size_t k = 0; k < decay.size(); ++k) {
         transition_table["1order_" + p.to_string() + "_" + std::to_string(k)] = decay[k];
-        transition_to_point["1order_" + p.to_string() + "_" + std::to_string(k)] = {p, static_cast<int>(k)};
+        transition_to_point["1order_" + p.to_string() + "_" + std::to_string(k)] = {p, Point(std::make_tuple(0.0, 0.0, 0.0), "Yb", k)};
     }
 }
 
@@ -56,10 +56,10 @@ void Simulator::add_et_transitions(Point &p) {
 void Simulator::add_laser_transitions(Point &p) {
     if (p.type == "Yb" && p.state == 0) {
         transition_table["0order_" + p.to_string() + "_1"] = tag.at("laser");
-        transition_to_point["0order_" + p.to_string() + "_1"] = {p, 1};
+        transition_to_point["0order_" + p.to_string() + "_1"] = {p, Point(std::make_tuple(0.0, 0.0, 0.0), "Yb", 1)};
     } else if (p.type == "Tm" && p.state == 7) {
         transition_table["0order_" + p.to_string() + "_11"] = tag.at("laser_tm");
-        transition_to_point["0order_" + p.to_string() + "_11"] = {p, 11};
+        transition_to_point["0order_" + p.to_string() + "_11"] = {p, Point(std::make_tuple(0.0, 0.0, 0.0), "Yb", 11)};
     }
 }
 
@@ -92,14 +92,14 @@ void Simulator::process_transition(const std::string &selected_transition) {
 void Simulator::process_laser_excitation(const std::string &selected_transition) {
     auto [p, new_state] = transition_to_point[selected_transition];
     remove_old_transitions(p);
-    p.state = new_state;
+    p.state = new_state.state;
     update_after_transition(p);
 }
 
 void Simulator::process_decay(const std::string &selected_transition) {
     auto [p, new_state] = transition_to_point[selected_transition];
     remove_old_transitions(p);
-    p.state = new_state;
+    p.state = new_state.state;
     update_after_transition(p);
 }
 

@@ -5,7 +5,9 @@
 #include <array>
 
 // Function declarations from utils
-std::tuple<double, double, double> to_euclidean(const std::array<double, 3>& vec);
-double e_distance(const std::tuple<double, double, double>& vec);
+namespace utils {
+    std::tuple<double, double, double> to_euclidean(const std::array<double, 3>& vec);
+    double e_distance(const std::tuple<double, double, double>& vec);
+}
 
 #endif // UTILS_HPP

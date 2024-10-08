@@ -11,17 +11,22 @@
 static double ET_n_term;
 static std::unordered_map<std::string, double> Tm_energy_simplified;
 static std::unordered_map<std::string, int> Tm_g;
+std::unordered_map<std::string, std::vector<double>> Tm_RME_tmp;
 
-void initialize_data(int n, const std::unordered_map<std::string, double>& Tm_energy) {
-    ET_n_term = std::pow(((n * n + 2) / (3.0 * n)), 4);
+void initialize_data() {
+    ET_n_term = std::pow(((TmAdjustableParameter::n * TmAdjustableParameter::n + 2) / (3.0 * TmAdjustableParameter::n)), 4);
+    
+    Tm_RME_tmp.clear();
+    Tm_g.clear();
+    Tm_energy_simplified.clear();
+    Tm_RME_tmp = Tm_RME; 
 
     for (const auto& key_value : Tm_RME) {
-        // TODO: 这个iteration可能出问题，因为我modify了Tm_RME
         std::string key = key_value.first;
         auto parts = key.find('E');
         std::string new_key = "E" + key.substr(parts + 2, 1) + "E" + key.substr(parts + 1, 1);
         if (Tm_RME.find(new_key) == Tm_RME.end()) {
-            Tm_RME[new_key] = key_value.second;
+            Tm_RME_tmp[new_key] = key_value.second;
         }
     }
 
@@ -35,7 +40,11 @@ void initialize_data(int n, const std::unordered_map<std::string, double>& Tm_en
     }
 }
 
+UpConversion::UpConversion() : ion2(0) {} 
+
 UpConversion::UpConversion(int ion2) : ion2(ion2) {}
+
+UpConversion::UpConversion(const UpConversion& other) : ion2(other.ion2) {}
 
 double UpConversion::total_probability(double r) {
     double sum = 0.0;
@@ -73,8 +82,11 @@ void UpConversion::add_state(int ion12, int ion22, double rate) {
 }
 
 
+CrossRelaxation::CrossRelaxation() : ion1(0), ion2(0) {} 
 
 CrossRelaxation::CrossRelaxation(int ion1, int ion2) : ion1(ion1), ion2(ion2) {}
+
+CrossRelaxation::CrossRelaxation(const CrossRelaxation& other) : ion1(other.ion1), ion2(other.ion2) {}
 
 double CrossRelaxation::total_probability(double r) {
     double sum = 0.0;
@@ -113,49 +125,37 @@ void CrossRelaxation::add_state(int ion12, int ion22, double rate) {
 std::unordered_map<int, UpConversion> up_conversion() {
     std::unordered_map<int, UpConversion> ret;
     std::string ion1_energy = "S1";
-    auto E_level = Tm_energy_simplified;
-    auto RME_value = Tm_RME;
-    auto g_value = Tm_g;
-    auto Omega_value = Tm_omega;
+    initialize_data();
+    auto& E_level = Tm_energy_simplified;
+    auto& RME_value = Tm_RME;
+    auto& g_value = Tm_g;
+    auto& Omega_value = Tm_omega;
 
     for (const auto& [ion2_energy, _] : Tm_energy_simplified) {
-        int ion2_initial_state = std::stoi(ion2_energy.substr(1));
+        auto pos = ion2_energy.find('E');
+        int ion2_initial_state = std::stoi(ion2_energy.substr(pos + 1));
         UpConversion ion2_et(ion2_initial_state);
-        
-        std::unordered_map<std::string, double> all_transitions;
-        double delta_E_ion1 = 10246;
-        
+                
         for (const auto& [level, energy] : E_level) {
             if (level != ion2_energy) {
-                double energy_diff2 = energy - E_level[ion2_energy];
-                if (energy_diff2 < 0 && std::abs(delta_E_ion1 + energy_diff2) < TmAdjustableParameter::n_phonon * TmAdjustableParameter::E_phonon) {
-                    double Delta_E = std::abs(delta_E_ion1 + energy_diff2);
-                    all_transitions["S1S0-" + level] = Delta_E;
+                double energy_diff2 = E_level[ion2_energy] - energy;
+                if (energy_diff2 < 0 && std::abs(10246 + energy_diff2) < TmAdjustableParameter::n_phonon * TmAdjustableParameter::E_phonon) {
+                    double Delta_E = std::abs(10246 + energy_diff2);
+                    auto second_part = ion2_energy+level;
+                    auto second_values = RME_value.at(ion2_energy+level);
+                    auto new_key = "E" + second_part.substr(second_part.find('E') + 1);
+
+                    double S1 = 2e-20;
+                    double S2 = Omega_value.at("2") * second_values[0] + Omega_value.at("4") * second_values[1] + Omega_value.at("6") * second_values[2];
+                    double my_value = TmAdjustableParameter::ET_constant * ET_n_term * TmAdjustableParameter::s0 * (S1 * S2) * std::exp(-TmAdjustableParameter::beta * Delta_E) / (Yb_g.at(ion1_energy) * g_value.at(new_key));
+                    
+                    if (my_value > TmAdjustableParameter::threshold) {
+                        int donor_final_state = 0;
+                        int acceptor_final_state = std::stoi(level.substr(level.find('E') + 1));
+
+                        ion2_et.add_state(donor_final_state, acceptor_final_state, my_value);
+                    }
                 }
-            }
-        }
-
-        for (const auto& [key, value] : all_transitions) {
-            auto parts = key.substr(0, key.find('-'));
-            auto second_part = key.substr(key.find('-') + 1);
-            auto second_values = RME_value[second_part];
-            all_transitions[key] = {value, 2e-20, second_values};
-            auto new_key = "E" + second_part.substr(second_part.find('E') + 1);
-            all_transitions[key].push_back({Yb_g[ion1_energy], g_value[new_key]});
-        }
-
-        for (const auto& [key, value] : all_transitions) {
-            double S1 = value[1];
-            double S2 = Omega_value["2"] * value[2][0] + Omega_value["4"] * value[2][1] + Omega_value["6"] * value[2][2];
-            double my_value = TmAdjustableParameter::ET_constant * ET_n_term * TmAdjustableParameter::s0 * (S1 * S2) * std::exp(-TmAdjustableParameter::beta * value[0]) / (value[3][0] * value[3][1]);
-
-            if (my_value > Tm_adjustable_parameter::threshold) {
-                auto donor_transition = key.substr(0, key.find('-'));
-                auto acceptor_transition = key.substr(key.find('-') + 1);
-                int donor_final_state = std::stoi(donor_transition.substr(donor_transition.find('S') + 1));
-                int acceptor_final_state = std::stoi(acceptor_transition.substr(acceptor_transition.find('E') + 1));
-
-                ion2_et.add_state(donor_final_state, acceptor_final_state, my_value);
             }
         }
         
@@ -165,56 +165,67 @@ std::unordered_map<int, UpConversion> up_conversion() {
     return ret;
 }
 
-std::unordered_map<int, CrossRelaxation> cross_relaxation() {
-    std::unordered_map<int, CrossRelaxation> ret;
-    std::string ion1_energy = "S1";
-    auto E_level = Tm_energy_simplified;
-    auto RME_value = Tm_RME;
-    auto g_value = Tm_g;
-    auto Omega_value = Tm_omega;
 
-    for (const auto& [ion2_energy, _] : Tm_energy_simplified) {
-        int ion2_initial_state = std::stoi(ion2_energy.substr(1));
-        CrossRelaxation ion2_et(ion2_initial_state);
+std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxation() {
+    std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> ret;
+    initialize_data();
+    auto& E_level = Tm_energy_simplified;
+    auto& RME_value = Tm_RME;
+    auto& g_value = Tm_g;
+    auto& Omega_value = Tm_omega;
+    
+    for (const auto& ion1_energy : Tm_energy_simplified) {
+        std::unordered_map<int, CrossRelaxation> ion1_ets;
+        auto pos = ion1_energy.first.find('E');
+        int donor_initial_state = std::stoi(ion1_energy.first.substr(pos + 1));
+        
+        for (const auto& ion2_energy : Tm_energy_simplified) {
 
-        std::unordered_map<std::string, double> all_transitions;
-        double delta_E_ion1 = 10246;
+            pos = ion2_energy.first.find('E');
+            int acceptor_initial_state = std::stoi(ion2_energy.first.substr(pos + 1));
 
-        for (const auto& [level, energy] : E_level) {
-            if (level != ion2_energy) {
-                double energy_diff2 = energy - E_level[ion2_energy];
-                if (energy_diff2 < 0 && std::abs(delta_E_ion1 + energy_diff2) < TmAdjustableParameter::n_phonon * TmAdjustableParameter::E_phonon) {
-                    double Delta_E = std::abs(delta_E_ion1 + energy_diff2);
-                    all_transitions["S1S0-" + level] = Delta_E;
+            CrossRelaxation ion1_ion2_et(donor_initial_state, acceptor_initial_state);
+
+            std::unordered_map<std::string, double> all_transitions;
+            for (const auto& level : Tm_energy_simplified) {
+                if (level.first != ion1_energy.first) {
+                    double energy_diff1 = Tm_energy_simplified.at(ion1_energy.first) - level.second;
+                    std::string transition1 = ion1_energy.first + level.first;
+                    
+                    for (const auto& level2 : Tm_energy_simplified) {
+                        if (level2.first != ion2_energy.first) {
+                            double energy_diff2 = Tm_energy_simplified.at(ion2_energy.first) - level2.second;
+                            std::string transition2 = ion2_energy.first + level2.first;
+
+                            if ((energy_diff1 > 0 && energy_diff2 < 0 && std::abs(energy_diff1 + energy_diff2) < TmAdjustableParameter::n_phonon * TmAdjustableParameter::E_phonon) ||
+                                (energy_diff1 < 0 && energy_diff2 > 0 && std::abs(energy_diff2 + energy_diff1) < TmAdjustableParameter::n_phonon * TmAdjustableParameter::E_phonon)) {
+                                all_transitions[transition1 + "-" + transition2] = std::abs(energy_diff1 + energy_diff2);
+
+                                const auto& first_values = Tm_RME.at(transition1);
+                                const auto& second_values = Tm_RME.at(transition2);
+
+                                if (!first_values.empty() && !second_values.empty()) {
+                                    double S1 = Tm_omega.at("2") * first_values[0] + Tm_omega.at("4") * first_values[1] + Tm_omega.at("6") * first_values[2];
+                                    double S2 = Tm_omega.at("2") * second_values[0] + Tm_omega.at("4") * second_values[1] + Tm_omega.at("6") * second_values[2];
+                                    double my_value = TmAdjustableParameter::ET_constant * ET_n_term * TmAdjustableParameter::s0 * (S1 * S2) 
+                                                      * std::exp(-TmAdjustableParameter::beta * abs(energy_diff1 + energy_diff2)) / (g_value.at(level.first) * g_value.at(level2.first));
+
+                                    if (my_value > TmAdjustableParameter::threshold){
+                                        int donor_final_state = std::stoi(transition1.substr(transition1.find('E') + 1));
+                                        int acceptor_final_state = std::stoi(transition2.substr(transition2.find('E') + 1));
+                                        ion1_ion2_et.add_state(donor_final_state, acceptor_final_state, my_value);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
+            ion1_ets[acceptor_initial_state] = ion1_ion2_et;
         }
 
-        for (const auto& [key, value] : all_transitions) {
-            auto parts = key.substr(0, key.find('-'));
-            auto second_part = key.substr(key.find('-') + 1);
-            auto second_values = RME_value[second_part];
-            all_transitions[key] = {value, 2e-20, second_values};
-            auto new_key = "E" + second_part.substr(second_part.find('E') + 1);
-            all_transitions[key].push_back({Yb_g[ion1_energy], g_value[new_key]});
-        }
-
-        for (const auto& [key, value] : all_transitions) {
-            double S1 = value[1];
-            double S2 = Omega_value["2"] * value[2][0] + Omega_value["4"] * value[2][1] + Omega_value["6"] * value[2][2];
-            double my_value = TmAdjustableParameter::ET_constant * ET_n_term * TmAdjustableParameter::s0 * (S1 * S2) * std::exp(-TmAdjustableParameter::beta * value[0]) / (value[3][0] * value[3][1]);
-
-            if (my_value > TmAdjustableParameter::threshold) {
-                auto donor_transition = key.substr(0, key.find('-'));
-                auto acceptor_transition = key.substr(key.find('-') + 1);
-                int donor_final_state = std::stoi(donor_transition.substr(donor_transition.find('S') + 1));
-                int acceptor_final_state = std::stoi(acceptor_transition.substr(acceptor_transition.find('E') + 1));
-
-                ion2_et.add_state(donor_final_state, acceptor_final_state, my_value);
-            }
-        }
-
-        ret[ion2_initial_state] = ion2_et;
+        ret[donor_initial_state] = ion1_ets;
     }
 
     return ret;

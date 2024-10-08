@@ -52,7 +52,7 @@ void Lattice::initialize_points() {
     std::fill(types.begin() + na_points.size(), types.begin() + na_points.size() + yb_num, "Yb");
     std::fill(types.begin() + na_points.size() + yb_num, types.end(), "Tm");
 
-    std::random_shuffle(types.begin(), types.end());
+    std::shuffle(types.begin(), types.end());
 
     for (size_t i = 0; i < y_coords.size(); ++i) {
         y_coords[i].type = types[i];
