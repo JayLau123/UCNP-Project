@@ -4,10 +4,10 @@
 
 namespace utils{
     // Convert vector to Euclidean space
-    std::tuple<double, double, double> to_euclidean(const std::array<double, 3>& vec) {
-        double a = vec[0];
-        double b = vec[1];
-        double c = vec[2];
+    std::tuple<double, double, double> to_euclidean(const std::tuple<double, double, double>& vec) {
+        double a = std::get<0>(vec);
+        double b = std::get<1>(vec);
+        double c = std::get<2>(vec);
         
         double x = 0.596 * a + 0.5 * 0.596 * b;
         double y = std::sqrt(3.0) / 2 * 0.596 * b;

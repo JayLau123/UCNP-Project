@@ -6,7 +6,7 @@
 
 // Function declarations from utils
 namespace utils {
-    std::tuple<double, double, double> to_euclidean(const std::array<double, 3>& vec);
+    std::tuple<double, double, double> to_euclidean(const std::tuple<double, double, double>& vec);
     double e_distance(const std::tuple<double, double, double>& vec);
 }
 

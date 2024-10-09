@@ -11,7 +11,7 @@
 
 class EnergyTransfer {
 public:
-    virtual double total_probability(double r) = 0;
+    virtual double total_probability(double r) const = 0;
     virtual std::pair<int, int> select_path(double r) = 0;
     virtual void add_state(int ion12, int ion22, double rate) = 0;
 };
@@ -21,7 +21,7 @@ public:
     UpConversion();
     UpConversion(int ion2);
     UpConversion(const UpConversion& other);
-    double total_probability(double r) override;
+    double total_probability(double r) const override;
     std::pair<int, int> select_path(double r) override;
     void add_state(int ion12, int ion22, double rate) override;
 
@@ -35,7 +35,7 @@ public:
     CrossRelaxation();
     CrossRelaxation(int ion1, int ion2);
     CrossRelaxation(const CrossRelaxation& other);
-    double total_probability(double r) override;
+    double total_probability(double r) const override;
     std::pair<int, int> select_path(double r) override;
     void add_state(int ion12, int ion22, double rate) override;
 

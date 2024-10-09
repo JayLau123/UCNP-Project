@@ -17,11 +17,11 @@ public:
     std::tuple<double, double, double> to_euclidean() const;
     double to(const Point& other) const;
     Point deep_copy() const;
-    std::pair<double, std::vector<int>> react(const Point& other, 
-                                               const std::unordered_map<int, CrossRelaxation>& cross_relaxation,
-                                               const std::unordered_map<int, UpConversion>& up_conversion,
-                                               double yb_yb, 
-                                               double distance) const;
+    double react(const Point& other, 
+                    const std::unordered_map<int, std::unordered_map<int, CrossRelaxation>>& cross_relaxation,
+                    const std::unordered_map<int, UpConversion>& up_conversion,
+                    double yb_yb, 
+                    double distance) const;
     std::vector<double> get_decay_rates(const std::unordered_map<std::string, double>& tag) const;
     std::string to_string() const;
 

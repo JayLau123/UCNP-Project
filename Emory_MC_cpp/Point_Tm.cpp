@@ -40,24 +40,24 @@ Point Point::deep_copy() const {
     return Point(p, type, state);
 }
 
-std::pair<double, std::vector<int>> Point::react(const Point& other, 
-                                                 const std::unordered_map<int, CrossRelaxation>& cross_relaxation,
-                                                 const std::unordered_map<int, std::unordered_map<int, UpConversion>>& up_conversion,
-                                                 double yb_yb, 
-                                                 double distance) const {
+double Point::react(const Point& other, 
+                    const std::unordered_map<int, std::unordered_map<int, CrossRelaxation>>& cross_relaxation,
+                    const std::unordered_map<int, UpConversion>& up_conversion,
+                    double yb_yb, 
+                    double distance) const {
     if (type == "Yb" && state == 1) {
         if (other.type == "Yb") {
             if (other.state == 0) {
-                return {yb_yb / std::pow(distance / 1e7, 6), {}};
+                return yb_yb / std::pow(distance / 1e7, 6);
             }
-            return {0.0, {}};
+            return 0.0;
         } else {
-            return {up_conversion.at(other.state).total_probability(distance), {}};
+            return up_conversion.at(other.state).total_probability(distance);
         }
     } else if (type == "Tm" && other.type == "Tm") {
-        return {cross_relaxation.at(state).at(other.state).total_probability(distance), {}};
+        return cross_relaxation.at(state).at(other.state).total_probability(distance);
     }
-    return {0.0, {}};
+    return 0.0;
 }
 
 std::vector<double> Point::get_decay_rates(const std::unordered_map<std::string, double>& tag) const {

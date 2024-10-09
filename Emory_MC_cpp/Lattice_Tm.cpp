@@ -1,5 +1,6 @@
 #include "Lattice_Tm.hpp"
 #include <algorithm>
+#include <random>
 #include <iostream>
 #include "Point_Tm.hpp"
 #include "utils.hpp"
@@ -51,8 +52,10 @@ void Lattice::initialize_points() {
     types.resize(na_points.size() + yb_num + tm_num + (n_points - yb_num - tm_num), "Y");
     std::fill(types.begin() + na_points.size(), types.begin() + na_points.size() + yb_num, "Yb");
     std::fill(types.begin() + na_points.size() + yb_num, types.end(), "Tm");
-
-    std::shuffle(types.begin(), types.end());
+    
+    std::random_device rd; 
+    std::default_random_engine rng(rd());  
+    std::shuffle(types.begin(), types.end(), rng);
 
     for (size_t i = 0; i < y_coords.size(); ++i) {
         y_coords[i].type = types[i];

@@ -1,3 +1,9 @@
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <iostream>
+
 #include "Tm_inf.hpp"
 #include "Tm_RateCalculation.hpp"
 #include "Tm_adjustable_parameter.hpp"
@@ -6,37 +12,47 @@
 #include "Lattice_Tm.hpp"
 #include "EnergyTransfer_Tm.hpp"
 #include "Simulator_Tm.hpp"
-#include <iostream>
-#include <unordered_map>
-#include <vector>
 
 int main() {
     // Manually input for Yb
+    std::cout << "new"<< '\n';
     std::unordered_map<std::string, double> tag_Yb = {
         {"c0", 7e-39},  // Yb-Yb resonant energy transfer
         {"Ws", 834}     // Yb ED+MD
     };
 
+    std::cout << "enter"<< '\n';
+
+    
+
     // Calculating tags for Tm
     auto tag_Tm_ED = ED_cal(Tm_energy, Tm_omega, Tm_RME, TmAdjustableParameter::n);
-    auto tag_Tm_MD = MD_cal(Tm_energy, TmAdjustableParameter::n);
+    std::cout << "EDCAL"<< '\n';
+    auto tag_Tm_MD = MD_cal(Tm_energy);
+    std::cout << "MDCAL"<< '\n';
     auto tag_Tm_mpr = MPR_cal(Tm_energy, TmAdjustableParameter::W0, TmAdjustableParameter::alpha, TmAdjustableParameter::E_phonon);
+    std::cout << "MPRCAL"<< '\n';
     auto tag_default = tag_Tm_ED;
 
     // Add Yb parameters to tag_default
     for (const auto& key_value : tag_Yb) {
         tag_default[key_value.first] = key_value.second;
     }
+    std::cout << "TAGYB"<< '\n';
 
     // Combine MD+ED
     for (const auto& key_value : tag_Tm_MD) {
         tag_default[key_value.first] += key_value.second;
     }
+    std::cout << "TAGMD"<< '\n';
 
     // Combine MD+ED+MPR
     for (const auto& key_value : tag_Tm_mpr) {
         tag_default[key_value.first] += key_value.second;
     }
+    std::cout << "COmbine"<< '\n';
+
+    std::cout << "done with tag"<< '\n';
 
     // Parameters for the simulation
     std::vector<double> Tm_conc = {0.15};

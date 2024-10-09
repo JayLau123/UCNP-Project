@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <random>
+#include <algorithm>
 #include <unordered_map>
 #include "Point_Tm.hpp"
 #include "utils.hpp"
@@ -11,7 +12,7 @@ class Lattice {
 public:
     std::vector<Point> points;
     std::unordered_map<Point, std::vector<std::pair<Point, double>>> neighbors;
-    
+
     Lattice(double yb_conc, double tm_conc, double d, double r, int seed = 0);
     void get_neighbors(double r);
     std::vector<Point> in_diameter(double d, const std::vector<Point>& points);

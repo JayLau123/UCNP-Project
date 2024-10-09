@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <iostream>
 #include <random>
 
 static double ET_n_term;
@@ -23,8 +24,9 @@ void initialize_data() {
 
     for (const auto& key_value : Tm_RME) {
         std::string key = key_value.first;
-        auto parts = key.find('E');
-        std::string new_key = "E" + key.substr(parts + 2, 1) + "E" + key.substr(parts + 1, 1);
+        auto firstE = key.find('E');
+        auto secondE = key.find('E', firstE+1);
+        std::string new_key = key.substr(secondE) + key.substr(firstE, secondE-firstE);
         if (Tm_RME.find(new_key) == Tm_RME.end()) {
             Tm_RME_tmp[new_key] = key_value.second;
         }
@@ -46,7 +48,7 @@ UpConversion::UpConversion(int ion2) : ion2(ion2) {}
 
 UpConversion::UpConversion(const UpConversion& other) : ion2(other.ion2) {}
 
-double UpConversion::total_probability(double r) {
+double UpConversion::total_probability(double r) const {
     double sum = 0.0;
     for (const auto& result : resulting_states) {
         sum += std::get<2>(result) / std::pow(r / 1e7, 6);
@@ -88,7 +90,7 @@ CrossRelaxation::CrossRelaxation(int ion1, int ion2) : ion1(ion1), ion2(ion2) {}
 
 CrossRelaxation::CrossRelaxation(const CrossRelaxation& other) : ion1(other.ion1), ion2(other.ion2) {}
 
-double CrossRelaxation::total_probability(double r) {
+double CrossRelaxation::total_probability(double r) const {
     double sum = 0.0;
     for (const auto& result : resulting_states) {
         sum += std::get<2>(result) / std::pow(r / 1e7, 6);
@@ -127,7 +129,7 @@ std::unordered_map<int, UpConversion> up_conversion() {
     std::string ion1_energy = "S1";
     initialize_data();
     auto& E_level = Tm_energy_simplified;
-    auto& RME_value = Tm_RME;
+    auto& RME_value = Tm_RME_tmp;
     auto& g_value = Tm_g;
     auto& Omega_value = Tm_omega;
 
@@ -143,12 +145,11 @@ std::unordered_map<int, UpConversion> up_conversion() {
                     double Delta_E = std::abs(10246 + energy_diff2);
                     auto second_part = ion2_energy+level;
                     auto second_values = RME_value.at(ion2_energy+level);
-                    auto new_key = "E" + second_part.substr(second_part.find('E') + 1);
+                    auto new_key = level;
 
                     double S1 = 2e-20;
                     double S2 = Omega_value.at("2") * second_values[0] + Omega_value.at("4") * second_values[1] + Omega_value.at("6") * second_values[2];
                     double my_value = TmAdjustableParameter::ET_constant * ET_n_term * TmAdjustableParameter::s0 * (S1 * S2) * std::exp(-TmAdjustableParameter::beta * Delta_E) / (Yb_g.at(ion1_energy) * g_value.at(new_key));
-                    
                     if (my_value > TmAdjustableParameter::threshold) {
                         int donor_final_state = 0;
                         int acceptor_final_state = std::stoi(level.substr(level.find('E') + 1));
@@ -170,7 +171,7 @@ std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxati
     std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> ret;
     initialize_data();
     auto& E_level = Tm_energy_simplified;
-    auto& RME_value = Tm_RME;
+    auto& RME_value = Tm_RME_tmp;
     auto& g_value = Tm_g;
     auto& Omega_value = Tm_omega;
     
@@ -201,8 +202,8 @@ std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxati
                                 (energy_diff1 < 0 && energy_diff2 > 0 && std::abs(energy_diff2 + energy_diff1) < TmAdjustableParameter::n_phonon * TmAdjustableParameter::E_phonon)) {
                                 all_transitions[transition1 + "-" + transition2] = std::abs(energy_diff1 + energy_diff2);
 
-                                const auto& first_values = Tm_RME.at(transition1);
-                                const auto& second_values = Tm_RME.at(transition2);
+                                const auto& first_values = RME_value.at(transition1);
+                                const auto& second_values = RME_value.at(transition2);
 
                                 if (!first_values.empty() && !second_values.empty()) {
                                     double S1 = Tm_omega.at("2") * first_values[0] + Tm_omega.at("4") * first_values[1] + Tm_omega.at("6") * first_values[2];

@@ -33,10 +33,10 @@ private:
     Lattice lattice;
     double t;
     std::unordered_map<std::string, double> tag;
-    CrossRelaxation cross_relaxation;
-    UpConversion up_conversion;
+    std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxation;
+    std::unordered_map<int, UpConversion> up_conversion;
     std::unordered_map<std::string, double> transition_table;
-    std::unordered_map<std::string, std::pair<Point, int>> transition_to_point;
+    std::unordered_map<std::string, std::pair<Point, Point>> transition_to_point;
     std::default_random_engine generator;
 };
 

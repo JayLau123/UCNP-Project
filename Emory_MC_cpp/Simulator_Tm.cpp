@@ -1,10 +1,12 @@
 #include "Simulator_Tm.hpp"
 #include "Point_Tm.hpp"
 #include "Lattice_Tm.hpp"
-#include "EnergyTransfer_Tm.hpp"
+
+std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxation_map = cross_relaxation();
+std::unordered_map<int, UpConversion> up_conversion_map = up_conversion(); 
 
 Simulator::Simulator(Lattice &lattice, const std::unordered_map<std::string, double> &tag)
-    : lattice(lattice.deep_copy()), t(0), tag(tag), cross_relaxation(), up_conversion() {
+    : lattice(lattice.deep_copy()), t(0), tag(tag), cross_relaxation(cross_relaxation_map), up_conversion(up_conversion_map) {
     initialize_transitions();
 }
 
@@ -41,13 +43,13 @@ void Simulator::add_decay_transitions(Point &p) {
 void Simulator::add_et_transitions(Point &p) {
     for (const auto &[p_nei, distance] : lattice.neighbors[p]) {
         auto r = p.react(p_nei, cross_relaxation, up_conversion, tag.at("c0"), distance);
-        if (r != nullptr) {
-            transition_table["2order_" + p.to_string() + "_" + p_nei.to_string()] = *r;
+        if (r != 0) {
+            transition_table["2order_" + p.to_string() + "_" + p_nei.to_string()] = r;
             transition_to_point["2order_" + p.to_string() + "_" + p_nei.to_string()] = {p, p_nei};
         }
         r = p_nei.react(p, cross_relaxation, up_conversion, tag.at("c0"), distance);
-        if (r != nullptr) {
-            transition_table["2order_" + p_nei.to_string() + "_" + p.to_string()] = *r;
+        if (r != 0) {
+            transition_table["2order_" + p_nei.to_string() + "_" + p.to_string()] = r;
             transition_to_point["2order_" + p_nei.to_string() + "_" + p.to_string()] = {p_nei, p};
         }
     }
@@ -148,13 +150,13 @@ void Simulator::handle_energy_transfer(Point &p_donor, Point &p_acceptor) {
     } else if (p_donor.type == "Yb" && p_acceptor.type != "Yb") {
         // upconversion
         auto new_state = up_conversion[p_acceptor.state].select_path(p_donor.to(p_acceptor));
-        p_donor.state = new_state[0];
-        p_acceptor.state = new_state[1];
+        p_donor.state = new_state.first;
+        p_acceptor.state = new_state.second;
     } else {
         // cross relaxation
         auto new_state = cross_relaxation[p_donor.state][p_acceptor.state].select_path(p_donor.to(p_acceptor));
-        p_donor.state = new_state[0];
-        p_acceptor.state = new_state[1];
+        p_donor.state = new_state.first;
+        p_acceptor.state = new_state.second;
     }
 }
 

@@ -1,6 +1,7 @@
 #ifndef TM_RATECALCULATION_HPP
 #define TM_RATECALCULATION_HPP
 
+#include "Tm_adjustable_parameter.hpp"
 #include <unordered_map>
 #include <string>
 #include <vector>
@@ -13,8 +14,7 @@ std::unordered_map<std::string, double> ED_cal(
 );
 
 std::unordered_map<std::string, double> MD_cal(
-    const std::unordered_map<std::string, double>& energy_dict, 
-    double n
+    const std::unordered_map<std::string, double>& energy_dict
 );
 
 std::unordered_map<std::string, double> MPR_cal(

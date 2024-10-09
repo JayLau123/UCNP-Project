@@ -1,4 +1,5 @@
 #include "Tm_RateCalculation.hpp"
+#include "Tm_adjustable_parameter.hpp"
 #include <cmath>
 #include <unordered_map>
 #include <string>
@@ -46,7 +47,7 @@ std::unordered_map<std::string, double> ED_cal(
 }
 
 
-std::unordered_map<std::string, double> MD_cal(const std::unordered_map<std::string, double>& energy_dict, int n) {
+std::unordered_map<std::string, double> MD_cal(const std::unordered_map<std::string, double>& energy_dict) {
     // MD selection rule, from Xueyuan Chen
 
     // Function to extract the symbol part from strings like 'E0(3H6)'
@@ -92,7 +93,7 @@ std::unordered_map<std::string, double> MD_cal(const std::unordered_map<std::str
     }
 
     // Calculate the MD rates
-    double MD_constant = (4 * (6.626e-27) * pow(3.14, 2) * pow(4.8e-10, 2) * pow(n, 3)) / (3 * pow(9.11e-28, 2) * pow(3e10, 2));
+    double MD_constant = (4 * (6.626e-27) * pow(3.14, 2) * pow(4.8e-10, 2) * pow(TmAdjustableParameter::n, 3)) / (3 * pow(9.11e-28, 2) * pow(3e10, 2));
 
     std::unordered_map<char, int> L_QN = { {'S', 0}, {'P', 1}, {'D', 2}, {'F', 3}, {'G', 4}, 
                                   {'H', 5}, {'I', 6}, {'K', 7}, {'L', 8}, {'M', 9}, 
