@@ -43,13 +43,13 @@ int main() {
     }
 
     std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxation_map = cross_relaxation();
-    // for (const auto& entry : cross_relaxation_map) {
-    //     for (const auto& entry1 : entry.second) {
-    //         int key = entry1.first;
-    //         const CrossRelaxation& cross = entry1.second;
-    //         std::cout << "Key: " << entry.first<<" "<<key << ", Total Probability: " << cross.total_probability(1) << std::endl;
-    //     }
-    // }
+    for (const auto& entry : cross_relaxation_map) {
+        for (const auto& entry1 : entry.second) {
+            int key = entry1.first;
+            const CrossRelaxation& cross = entry1.second;
+            std::cout << "Key: " << entry.first<<" "<<key << ", Total Probability: " << cross.total_probability(1) << std::endl;
+        }
+    }
 
     return 0;
 

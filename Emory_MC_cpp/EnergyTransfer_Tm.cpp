@@ -212,12 +212,12 @@ std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxati
                                     double S1 = Tm_omega.at("2") * first_values[0] + Tm_omega.at("4") * first_values[1] + Tm_omega.at("6") * first_values[2];
                                     double S2 = Tm_omega.at("2") * second_values[0] + Tm_omega.at("4") * second_values[1] + Tm_omega.at("6") * second_values[2];
                                     double my_value = TmAdjustableParameter::ET_constant * ET_n_term * TmAdjustableParameter::s0 * (S1 * S2) 
-                                                      * std::exp(-TmAdjustableParameter::beta * abs(energy_diff1 + energy_diff2)) / (g_value.at(level.first) * g_value.at(level2.first));
+                                                      * std::exp(-TmAdjustableParameter::beta * abs(energy_diff1 + energy_diff2)) / (g_value.at(ion1_energy.first) * g_value.at(ion2_energy.first));
 
                                     if (my_value > TmAdjustableParameter::threshold){
                                         std::cout <<donor_initial_state<< " "<< level.first<< " "<<acceptor_initial_state<<" "<<level2.first<<" "<<my_value<< "\n";
-                                        std::cout << S1 << " "<< S2<< " " << level.first << " "<<  level2.first <<"\n";
-                                        return ret;
+                                        // std::cout << S1 << " "<< S2<< " " << ion1_energy.first<< " "<< ion2_energy.first<< " "<<level.first << " "<<  level2.first <<"\n";
+                                        // return ret;
                                         int donor_final_state = std::stoi(transition1.substr(transition1.find('E') + 1));
                                         int acceptor_final_state = std::stoi(transition2.substr(transition2.find('E') + 1));
                                         ion1_ion2_et.add_state(donor_final_state, acceptor_final_state, my_value);
