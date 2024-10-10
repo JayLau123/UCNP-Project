@@ -51,6 +51,7 @@ UpConversion::UpConversion(const UpConversion& other) : ion2(other.ion2) {}
 double UpConversion::total_probability(double r) const {
     double sum = 0.0;
     for (const auto& result : resulting_states) {
+        std::cout << std::get<0>(result)<<" "<<std::get<1>(result)<<" "<< std::get<2>(result)<< "\n";
         sum += std::get<2>(result) / std::pow(r / 1e7, 6);
     }
     return sum;

@@ -15,71 +15,70 @@
 
 int main() {
     // Manually input for Yb
-    std::cout << "new"<< '\n';
     std::unordered_map<std::string, double> tag_Yb = {
         {"c0", 7e-39},  // Yb-Yb resonant energy transfer
         {"Ws", 834}     // Yb ED+MD
     };
-
-    std::cout << "enter"<< '\n';
-
     
 
     // Calculating tags for Tm
     auto tag_Tm_ED = ED_cal(Tm_energy, Tm_omega, Tm_RME, TmAdjustableParameter::n);
-    std::cout << "EDCAL"<< '\n';
     auto tag_Tm_MD = MD_cal(Tm_energy);
-    std::cout << "MDCAL"<< '\n';
     auto tag_Tm_mpr = MPR_cal(Tm_energy, TmAdjustableParameter::W0, TmAdjustableParameter::alpha, TmAdjustableParameter::E_phonon);
-    std::cout << "MPRCAL"<< '\n';
     auto tag_default = tag_Tm_ED;
 
     // Add Yb parameters to tag_default
     for (const auto& key_value : tag_Yb) {
         tag_default[key_value.first] = key_value.second;
     }
-    std::cout << "TAGYB"<< '\n';
 
     // Combine MD+ED
     for (const auto& key_value : tag_Tm_MD) {
         tag_default[key_value.first] += key_value.second;
     }
-    std::cout << "TAGMD"<< '\n';
 
     // Combine MD+ED+MPR
     for (const auto& key_value : tag_Tm_mpr) {
         tag_default[key_value.first] += key_value.second;
     }
-    std::cout << "COmbine"<< '\n';
+
+    std::unordered_map<int, UpConversion> up_conversion_map = up_conversion(); 
+    for (const auto& entry : up_conversion_map) {
+        int key = entry.first;
+        const UpConversion& upConversion = entry.second;
+        std::cout << "Key: " << key << ", Total Probability: " << upConversion.total_probability(1) << std::endl;
+    }
+
+    return 0;
 
     std::cout << "done with tag"<< '\n';
 
     // Parameters for the simulation
-    std::vector<double> Tm_conc = {0.15};
-    std::vector<double> power_density = {10000};
-    double t1 = 3000 * 1e-6;
-    double t2 = 5000 * 1e-6;
+    // std::vector<double> Tm_conc = {0.15};
+    // std::vector<double> power_density = {10000};
+    // double t1 = 3000 * 1e-6;
+    // double t2 = 5000 * 1e-6;
 
-    for (const auto& c : Tm_conc) {
-        for (const auto& p : power_density) {
-            std::cout << "Running simulation for Tm concentration " << c << ", power density " << p << std::endl;
+    // for (const auto& c : Tm_conc) {
+    //     for (const auto& p : power_density) {
+    //         std::cout << "Running simulation for Tm concentration " << c << ", power density " << p << std::endl;
 
-            // sigma from MC paper, SI
-            tag_default["laser"] = 0.058 * p;
-            tag_default["laser_tm"] = 0.0084 * p;
+    //         // sigma from MC paper, SI
+    //         tag_default["laser"] = 0.058 * p;
+    //         tag_default["laser_tm"] = 0.0084 * p;
 
-            // Create Lattice and Simulator objects
-            Lattice my_lattice(1 - c, c, TmAdjustableParameter::d, TmAdjustableParameter::r0);
-            Simulator my_simulator(my_lattice, tag_default);
+    //         // Create Lattice and Simulator objects
+    //         Lattice my_lattice(1 - c, c, TmAdjustableParameter::d, TmAdjustableParameter::r0);
+    //         Simulator my_simulator(my_lattice, tag_default);
 
-            // Run simulation
-            my_simulator.simulate(t1, t2);
+    //         // Run simulation
+    //         my_simulator.simulate(t1, t2);
 
-            // Process the result (if needed)
-        }
-    }
+    //         // Process the result (if needed)
+    //     }
+    // }
 
-    std::cout << "\nAll progress has been finished." << std::endl;
+    // std::cout << "\nAll progress has been finished." << std::endl;
 
     return 0;
 }

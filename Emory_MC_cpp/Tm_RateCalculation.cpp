@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <regex>
 
 // ED_cal function definition
 std::unordered_map<std::string, double> ED_cal(
@@ -15,6 +16,7 @@ std::unordered_map<std::string, double> ED_cal(
     double n
 ) {
     std::unordered_map<std::string, double> energy_gaps;
+    std::unordered_map<std::string, double> energy_gaps_J;
     std::vector<std::string> keys;
     
     // Extract keys
@@ -30,17 +32,28 @@ std::unordered_map<std::string, double> ED_cal(
             std::string start_E = start_level.substr(0, start_level.find('('));
             std::string end_E = end_level.substr(0, end_level.find('('));
             std::string key = start_E + end_E;
+            double J = std::stoi(start_level.substr(start_level.find('(') + 3, 1));
+            energy_gaps[key] = energy_dict.at(start_level) - energy_dict.at(end_level);
+            energy_gaps_J[key] = J;
+
+            start_level = keys[i];
+            end_level = keys[j];
+            start_E = start_level.substr(0, start_level.find('('));
+            end_E = end_level.substr(0, end_level.find('('));
+            key = start_E + end_E;
+            J = std::stoi(start_level.substr(start_level.find('(') + 3, 1));
+            energy_gaps_J[key] = J;
             energy_gaps[key] = energy_dict.at(start_level) - energy_dict.at(end_level);
         }
     }
 
     double n_term = (n * (std::pow(n, 2) + 2) * (std::pow(n, 2) + 2)) / 9;
-    double ED_constant = (64 * std::pow(M_PI, 4) * std::pow(4.8e-10, 2)) / (3 * 6.6261e-27);
+    double ED_constant = (64 * std::pow(3.14, 4) * std::pow(4.8e-10, 2)) / (3 * 6.6261e-27);
     std::unordered_map<std::string, double> dic_ED;
 
     for (const auto& [key, RME_vals] : RME_square) {
         double S = omega.at("2") * RME_vals[0] + omega.at("4") * RME_vals[1] + omega.at("6") * RME_vals[2];
-        dic_ED[key] = ED_constant * (std::pow(energy_gaps[key], 3) / 3.0) * n_term * S;
+        dic_ED[key] = ED_constant * (std::pow(energy_gaps[key], 3) / (2*energy_gaps_J[key]+1.0)) * n_term * S;
     }
 
     return dic_ED;
@@ -139,6 +152,18 @@ std::unordered_map<std::string, double> MD_cal(const std::unordered_map<std::str
     return dic_MD;
 }
 
+bool customSort(const std::string &a, const std::string &b) {
+    std::smatch matchA, matchB;
+    std::regex regex("E(\\d+)");
+
+    std::regex_search(a, matchA, regex);
+    std::regex_search(b, matchB, regex);
+
+    int numA = std::stoi(matchA[1]);
+    int numB = std::stoi(matchB[1]);
+
+    return numA < numB;
+}
 
 // MPR_cal function definition
 std::unordered_map<std::string, double> MPR_cal(
@@ -153,6 +178,8 @@ std::unordered_map<std::string, double> MPR_cal(
     for (const auto& item : energy_dict) {
         keys.push_back(item.first);
     }
+
+    std::sort(keys.begin(), keys.end(), customSort);
 
     for (size_t i = 1; i < keys.size(); ++i) {
         std::string start_level = keys[i];
