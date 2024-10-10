@@ -35,7 +35,7 @@ public:
 
     // ET constant
     static constexpr double ET_constant = (8 * 3.14 * 3.14 * (4.8e-10) * (4.8e-10) * (4.8e-10) * (4.8e-10)) / 
-                                           (3 * (6.626e-27) * (6.626e-27) * 3e10 * 3);
+                                           (3 * (6.626e-27) * (6.626e-27) * 3e10);
     
     // ET threshold
     static constexpr double threshold = 1e-42;

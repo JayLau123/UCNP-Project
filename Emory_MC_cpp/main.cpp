@@ -42,18 +42,20 @@ int main() {
         tag_default[key_value.first] += key_value.second;
     }
 
-    std::unordered_map<int, UpConversion> up_conversion_map = up_conversion(); 
-    for (const auto& entry : up_conversion_map) {
-        int key = entry.first;
-        const UpConversion& upConversion = entry.second;
-        std::cout << "Key: " << key << ", Total Probability: " << upConversion.total_probability(1) << std::endl;
-    }
+    std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxation_map = cross_relaxation();
+    // for (const auto& entry : cross_relaxation_map) {
+    //     for (const auto& entry1 : entry.second) {
+    //         int key = entry1.first;
+    //         const CrossRelaxation& cross = entry1.second;
+    //         std::cout << "Key: " << entry.first<<" "<<key << ", Total Probability: " << cross.total_probability(1) << std::endl;
+    //     }
+    // }
 
     return 0;
 
     std::cout << "done with tag"<< '\n';
 
-    // Parameters for the simulation
+    // Parameters for the simulation 
     // std::vector<double> Tm_conc = {0.15};
     // std::vector<double> power_density = {10000};
     // double t1 = 3000 * 1e-6;

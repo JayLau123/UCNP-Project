@@ -51,7 +51,7 @@ UpConversion::UpConversion(const UpConversion& other) : ion2(other.ion2) {}
 double UpConversion::total_probability(double r) const {
     double sum = 0.0;
     for (const auto& result : resulting_states) {
-        std::cout << std::get<0>(result)<<" "<<std::get<1>(result)<<" "<< std::get<2>(result)<< "\n";
+        // std::cout << std::get<0>(result)<<" "<<std::get<1>(result)<<" "<< std::get<2>(result)<< "\n";
         sum += std::get<2>(result) / std::pow(r / 1e7, 6);
     }
     return sum;
@@ -89,7 +89,8 @@ CrossRelaxation::CrossRelaxation() : ion1(0), ion2(0) {}
 
 CrossRelaxation::CrossRelaxation(int ion1, int ion2) : ion1(ion1), ion2(ion2) {}
 
-CrossRelaxation::CrossRelaxation(const CrossRelaxation& other) : ion1(other.ion1), ion2(other.ion2) {}
+CrossRelaxation::CrossRelaxation(const CrossRelaxation& other) : 
+        ion1(other.ion1), ion2(other.ion2), resulting_states(other.resulting_states) {}
 
 double CrossRelaxation::total_probability(double r) const {
     double sum = 0.0;
@@ -134,7 +135,7 @@ std::unordered_map<int, UpConversion> up_conversion() {
     auto& g_value = Tm_g;
     auto& Omega_value = Tm_omega;
 
-    for (const auto& [ion2_energy, _] : Tm_energy_simplified) {
+    for (const auto& [ion2_energy, _] : E_level) {
         auto pos = ion2_energy.find('E');
         int ion2_initial_state = std::stoi(ion2_energy.substr(pos + 1));
         UpConversion ion2_et(ion2_initial_state);
@@ -142,11 +143,12 @@ std::unordered_map<int, UpConversion> up_conversion() {
         for (const auto& [level, energy] : E_level) {
             if (level != ion2_energy) {
                 double energy_diff2 = E_level[ion2_energy] - energy;
+                // std::cout << ion2_energy<< " "<< level<<" "<< energy_diff2 <<"\n";
                 if (energy_diff2 < 0 && std::abs(10246 + energy_diff2) < TmAdjustableParameter::n_phonon * TmAdjustableParameter::E_phonon) {
                     double Delta_E = std::abs(10246 + energy_diff2);
                     auto second_part = ion2_energy+level;
                     auto second_values = RME_value.at(ion2_energy+level);
-                    auto new_key = level;
+                    auto new_key = ion2_energy;
 
                     double S1 = 2e-20;
                     double S2 = Omega_value.at("2") * second_values[0] + Omega_value.at("4") * second_values[1] + Omega_value.at("6") * second_values[2];
@@ -213,6 +215,9 @@ std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxati
                                                       * std::exp(-TmAdjustableParameter::beta * abs(energy_diff1 + energy_diff2)) / (g_value.at(level.first) * g_value.at(level2.first));
 
                                     if (my_value > TmAdjustableParameter::threshold){
+                                        std::cout <<donor_initial_state<< " "<< level.first<< " "<<acceptor_initial_state<<" "<<level2.first<<" "<<my_value<< "\n";
+                                        std::cout << S1 << " "<< S2<< " " << level.first << " "<<  level2.first <<"\n";
+                                        return ret;
                                         int donor_final_state = std::stoi(transition1.substr(transition1.find('E') + 1));
                                         int acceptor_final_state = std::stoi(transition2.substr(transition2.find('E') + 1));
                                         ion1_ion2_et.add_state(donor_final_state, acceptor_final_state, my_value);
@@ -225,10 +230,24 @@ std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxati
             }
 
             ion1_ets[acceptor_initial_state] = ion1_ion2_et;
+            std::cout <<donor_initial_state<< " "<< acceptor_initial_state<< " "<<ion1_ion2_et.total_probability(1)<< "\n";
         }
 
         ret[donor_initial_state] = ion1_ets;
+        // for (const auto& entry1 : ion1_ets) {
+        //     int key = entry1.first;
+        //     const CrossRelaxation& cross = entry1.second;
+        //     std::cout << "Key: " << key << ", Total Probability: " << cross.total_probability(1) << std::endl;
+        // }
     }
+
+    // for (const auto& entry : ret) {
+    //     for (const auto& entry1 : entry.second) {
+    //         int key = entry1.first;
+    //         const CrossRelaxation& cross = entry1.second;
+    //         std::cout << "245 Key: " << entry.first<<" "<<key << ", Total Probability: " << cross.total_probability(1) << std::endl;
+    //     }
+    // }
 
     return ret;
 }
