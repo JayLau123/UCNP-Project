@@ -10,12 +10,12 @@ Simulator::Simulator(Lattice &lattice, const std::unordered_map<std::string, dou
     initialize_transitions();
 }
 
-void Simulator::step(double steps) {
+void Simulator::step(double steps, bool emission) {
     double time_passed = 0;
 
     while (time_passed < steps) {
         std::string selected_transition = select_transition();
-        process_transition(selected_transition);
+        process_transition(selected_transition, emission);
         time_passed += -std::log(static_cast<double>(rand()) / RAND_MAX) / 
                        std::accumulate(transition_table.begin(), transition_table.end(), 0.0,
                                        [](double sum, const auto &pair) { return sum + pair.second; });
@@ -81,11 +81,11 @@ std::string Simulator::select_transition() {
     return transitions[dist(generator)];
 }
 
-void Simulator::process_transition(const std::string &selected_transition) {
+void Simulator::process_transition(const std::string &selected_transition, bool emission) {
     if (selected_transition.substr(0, 1) == "0") {
         process_laser_excitation(selected_transition);
     } else if (selected_transition.substr(0, 1) == "1") {
-        process_decay(selected_transition);
+        process_decay(selected_transition, emission);
     } else {
         process_et(selected_transition);
     }
@@ -98,8 +98,31 @@ void Simulator::process_laser_excitation(const std::string &selected_transition)
     update_after_transition(p);
 }
 
-void Simulator::process_decay(const std::string &selected_transition) {
+void Simulator::process_decay(const std::string &selected_transition, bool emission) {
     auto [p, new_state] = transition_to_point[selected_transition];
+    if (emission) {
+        if (p.state == 3 && new_state.state == 0) nir++;
+        else if (p.state == 6 && new_state.state == 2) nir++;
+        else if (p.state == 7 && new_state.state == 4) nir++;
+        else if (p.state == 7 && new_state.state == 5) nir++;
+        else if (p.state == 8 && new_state.state == 6) nir++;
+        else if (p.state == 9 && new_state.state == 6) nir++;
+
+        else if (p.state == 6 && new_state.state == 0) blue++;
+        else if (p.state == 7 && new_state.state == 1) blue++;
+        else if (p.state == 7 && new_state.state == 2) blue++;
+        else if (p.state == 8 && new_state.state == 3) blue++;
+        else if (p.state == 8 && new_state.state == 4) blue++;
+        else if (p.state == 8 && new_state.state == 5) blue++;
+        else if (p.state == 9 && new_state.state == 3) blue++;
+        else if (p.state == 9 && new_state.state == 4) blue++;
+        else if (p.state == 9 && new_state.state == 5) blue++;
+        else if (p.state == 10 && new_state.state == 3) blue++;
+        else if (p.state == 10 && new_state.state == 4) blue++;
+        else if (p.state == 10 && new_state.state == 5) blue++;
+        else if (p.state == 11 && new_state.state == 4) blue++;
+        else if (p.state == 11 && new_state.state == 5) blue++;
+    }
     remove_old_transitions(p);
     p.state = new_state.state;
     update_after_transition(p);
@@ -160,7 +183,8 @@ void Simulator::handle_energy_transfer(Point &p_donor, Point &p_acceptor) {
     }
 }
 
-void Simulator::simulate(double t1, double t2) {
-    step(t1);
-    step(t2 - t1);
+std::pair<int, int> Simulator::simulate(double t1, double t2) {
+    step(t1, false);
+    step(t2 - t1, true);
+    return {nir, blue}; 
 }
