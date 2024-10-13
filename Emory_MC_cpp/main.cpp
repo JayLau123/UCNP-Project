@@ -43,12 +43,11 @@ int main() {
     }
 
     std::cout << "done with tag"<< '\n';
-
-    Parameters for the simulation 
+ 
     std::vector<double> Tm_conc = {0.15};
     std::vector<double> power_density = {10000};
-    double t1 = 3000 * 1e-6;
-    double t2 = 5000 * 1e-6;
+    double t1 = 3000 * 1e-16;
+    double t2 = 5000 * 1e-16;
 
     for (const auto& c : Tm_conc) {
         for (const auto& p : power_density) {

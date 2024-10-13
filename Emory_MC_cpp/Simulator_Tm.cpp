@@ -1,6 +1,8 @@
 #include "Simulator_Tm.hpp"
 #include "Point_Tm.hpp"
 #include "Lattice_Tm.hpp"
+#include "iostream"
+#include "random"
 
 std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxation_map = cross_relaxation();
 std::unordered_map<int, UpConversion> up_conversion_map = up_conversion(); 
@@ -12,13 +14,26 @@ Simulator::Simulator(Lattice &lattice, const std::unordered_map<std::string, dou
 
 void Simulator::step(double steps, bool emission) {
     double time_passed = 0;
-
+    int i = 0;
     while (time_passed < steps) {
         std::string selected_transition = select_transition();
         process_transition(selected_transition, emission);
-        time_passed += -std::log(static_cast<double>(rand()) / RAND_MAX) / 
-                       std::accumulate(transition_table.begin(), transition_table.end(), 0.0,
-                                       [](double sum, const auto &pair) { return sum + pair.second; });
+
+        std::mt19937 gen(std::random_device{}());
+        std::uniform_real_distribution<> dist(0.0, 1.0);
+        double random_value = dist(gen);
+        double total_rates = std::accumulate(transition_table.begin(), transition_table.end(), 0.0,
+                                    [](double sum, const auto &pair) { return sum + pair.second; });
+        time_passed += -std::log(random_value) / total_rates;
+
+        // time_passed += -std::log(static_cast<double>(rand()) / RAND_MAX) / 
+        //                std::accumulate(transition_table.begin(), transition_table.end(), 0.0,
+        //                                [](double sum, const auto &pair) { return sum + pair.second; });
+        if (i >= 0) {
+            std::cout <<i<< " " << random_value << " "<< total_rates << " "<< time_passed<< " " <<steps<< "\n";
+        }
+        i++;
+        if (i > 10 ) break;
     }
 }
 

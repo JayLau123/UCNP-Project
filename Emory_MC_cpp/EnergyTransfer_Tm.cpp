@@ -215,9 +215,6 @@ std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxati
                                                       * std::exp(-TmAdjustableParameter::beta * abs(energy_diff1 + energy_diff2)) / (g_value.at(ion1_energy.first) * g_value.at(ion2_energy.first));
 
                                     if (my_value > TmAdjustableParameter::threshold){
-                                        std::cout <<donor_initial_state<< " "<< level.first<< " "<<acceptor_initial_state<<" "<<level2.first<<" "<<my_value<< "\n";
-                                        // std::cout << S1 << " "<< S2<< " " << ion1_energy.first<< " "<< ion2_energy.first<< " "<<level.first << " "<<  level2.first <<"\n";
-                                        // return ret;
                                         int donor_final_state = std::stoi(transition1.substr(transition1.find('E') + 1));
                                         int acceptor_final_state = std::stoi(transition2.substr(transition2.find('E') + 1));
                                         ion1_ion2_et.add_state(donor_final_state, acceptor_final_state, my_value);
@@ -230,7 +227,6 @@ std::unordered_map<int, std::unordered_map<int, CrossRelaxation>> cross_relaxati
             }
 
             ion1_ets[acceptor_initial_state] = ion1_ion2_et;
-            std::cout <<donor_initial_state<< " "<< acceptor_initial_state<< " "<<ion1_ion2_et.total_probability(1)<< "\n";
         }
 
         ret[donor_initial_state] = ion1_ets;
