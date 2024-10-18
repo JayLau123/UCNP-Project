@@ -65,6 +65,7 @@ class UpConversion(EnergyTransfer):
       self.resulting_states = []
 
    def total_probability(self, r): # TODO: 要不要在这里乘以10**（-6）
+      print(self.resulting_states)
       return sum([result1[2]/(r/10**7)**6 for result1 in self.resulting_states])
 
    def select_path(self, r):
